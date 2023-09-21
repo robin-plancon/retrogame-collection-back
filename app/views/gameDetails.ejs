@@ -13,17 +13,17 @@
         <% } %>
         <% if (game.cover) { %>
             <p><img src="<%= game.cover.url %>"><p>
-            <% } %>
-            
-            <% if (game.screenshots) { %>
-                <% game.screenshots.forEach((screenshot) => { %>
-                    
-                    
-                    <img src="<%= screenshot.url %>">
-                    
-                    <% })} %>
-                <% if (game.summary) { %>
-                    <p><%=game.summary %></p>
-                    <% } %>
-</body>
-</html>
+                <% } %>
+                
+                <% if (game.screenshots) { %>
+                    <% game.screenshots.forEach((screenshot) => { %>
+                        
+                        
+                        <img src="<%= screenshot.url %>">
+                        
+                        <% })} %>
+                        <% if (game.summary) { %>
+                            <p><%=game.summary %></p>
+                            <% } %>
+                        </body>
+                        </html>

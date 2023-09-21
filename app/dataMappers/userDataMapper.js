@@ -4,13 +4,13 @@ require('dotenv').config();
 
 
 const userDataMapper = {
-
+    
     async getUserDetail(id) {
-
-    const sqlQuery = `SELECT * FROM "user" WHERE id = $1`
-    const result = await client.query(sqlQuery, [id])
-    return result.rows[0]
-
+        
+        const sqlQuery = `SELECT * FROM "user" WHERE id = $1`
+        const result = await client.query(sqlQuery, [id])
+        return result.rows[0]
+        
     }
 }
 
