@@ -6,29 +6,29 @@ INSERT INTO "user" ("email", "nickname", "password") VALUES
     ('vanessa@example.com', 'Vanessa', 'motdepasse3');
 
 -- Insérer les jeux avec les ID spécifiés
-INSERT INTO "game" ("id") VALUES
-    (260835),
-    (260836),
-    (260837),
-    (260838),
-    (260839),
-    (260840);
+INSERT INTO "game" ("api_id", "slug") VALUES
+    (260835, 'servus-64'),
+    (260836, 'super-mario-the-power-star-journey'),
+    (260837, 'k-16-story-of-steel'),
+    (260838, 'torcher-arsonist-of-evil'),
+    (260839, 'dynamite-headdy--1'),
+    (260840, 'plutonium-mario-64');
 
 -- Associer des jeux aux utilisateurs (créer des collections)
 -- Utilisateur Flo
 INSERT INTO "collection" ("user_id", "game_id") VALUES
-    (1, 260835),
-    (1, 260836),
-    (1, 260837);
+    (1, 1),
+    (1, 2),
+    (1, 3);
 
 -- Utilisateur Lionel
 INSERT INTO "collection" ("user_id", "game_id") VALUES
-    (2, 260836),
-    (2, 260838),
-    (2, 260839);
+    (2, 2),
+    (2, 4),
+    (2, 5);
 
 -- Utilisateur Vanessa
 INSERT INTO "collection" ("user_id", "game_id") VALUES
-    (3, 260837),
-    (3, 260839),
-    (3, 260840);
+    (3, 3),
+    (3, 5),
+    (3, 6);

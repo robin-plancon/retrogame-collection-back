@@ -12,6 +12,6 @@ router.get("/user/:id", userController.getUserDetail);
 
 router.get("/user/:id/collection", collectionController.getCollection);
 
-router.post("/user/collection/game/:gameId", collectionController.postCollection);
+router.post("/user/collection/:slug/:gameApiId", collectionController.postCollection);
 
 module.exports = router;

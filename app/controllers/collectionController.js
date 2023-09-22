@@ -18,10 +18,11 @@ const collectionController = {
     
     postCollection : async function (req, res) {
         try {
-            const userId = req.session.user.id
-            const gameId = req.params.gameId
+            //const userId = req.session.user.id
+            const gameApiId = req.params.gameApiId
+            const slug = req.params.slug
             
-            const collection = await collectionDataMapper.postCollection(userId, gameId)
+            const collection = await collectionDataMapper.postCollection(1, gameApiId, slug)
             
             res.send("Youpi")
             
