@@ -5,13 +5,17 @@ const gameController = require("./controllers/gameController");
 const userController = require("./controllers/userController");
 const collectionController = require("./controllers/collectionController");
 
+const validationService = require("./service/validationService");
+
 router.get("/", gameController.getGames);
 router.get("/game/:id", gameController.getOneGame);
 
 router.get("/user/:id", userController.getUserDetail);
 
 router.get("/user/:id/collection", collectionController.getCollection);
-
 router.post("/user/collection/:slug/:gameApiId", collectionController.postCollection);
+router.delete("/user/collection/:gameApiId", collectionController.deleteFromCollection);
+
+router.post("/signup", validationService.checkForm, userController.signUp);
 
 module.exports = router;

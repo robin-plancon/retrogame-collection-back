@@ -8,7 +8,7 @@ const gameController = {
             
             const games = await gameDataMapper.getGames()
             console.log("Games :",JSON.stringify(games, null, 2));
-            res.render("index", {games});
+            res.json(games);
             
         } catch (error) {
             res.status(500).json(error.toString())
@@ -23,9 +23,7 @@ const gameController = {
             
             const game = await gameDataMapper.getOneGame(targetId)
             console.log("Game :",JSON.stringify(game, null, 2));
-            res.render("gameDetails", {game});
-            
-            
+            res.json(game);          
             
         } catch (error) {
             res.status(500).json(error.toString())
@@ -33,7 +31,7 @@ const gameController = {
         
     }
     
-}
+};
 
 
 module.exports = gameController

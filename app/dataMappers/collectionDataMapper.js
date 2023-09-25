@@ -5,7 +5,7 @@ const collectionDataMapper = {
     
     
     
-    async getCollection(id) {
+    getCollection: async function (id) {
         
         const sqlQuery = `SELECT "api_id" FROM "game"
         JOIN "collection" ON game.id = collection.game_id
@@ -36,14 +36,14 @@ const collectionDataMapper = {
         return games.data;
     },
     
-    async postCollection(userId, gameApiId, slug) {
-
+    postCollection: async function (userId, gameApiId, slug) {
+        
         const gameQuery = `
         SELECT insert_game($1, $2) AS game_id, $2 AS slug;
-    `;
-    const gameRes = await client.query(gameQuery, [gameApiId, slug]);
+        `;
+        const result = await client.query(gameQuery, [gameApiId, slug]);
         
-    const game_id = gameRes.rows[0].game_id
+        const game_id = result.rows[0].game_id
         // const gameQuery = `
         // INSERT INTO "game"("api_id", "slug") 
         // VALUES ($1, $2) 
@@ -64,9 +64,20 @@ const collectionDataMapper = {
         const newCollection = await client.query(collectionQuery, [userId, game_id]);
         console.log("collectionQuery :", newCollection);
         if (newCollection.rows.lenght == 0) {
-            res.send ("Attention ce jeu fait déjà parti de votre collection")
+            return "Attention ce jeu fait déjà parti de votre collection"
         }
+        return newCollection.rows[0];
     },
+    
+    deleteFromCollection: async function (userId, gameApiId) {
+        
+        const sqlQuery = `DELETE FROM "collection"
+        WHERE "user_id" = $1 AND "game_id" = (SELECT game.id FROM "game" WHERE api_id = $2)
+        RETURNING *`
+        const gameToDelete = await client.query(sqlQuery, [userId, gameApiId]);
+        
+        return gameToDelete.rows[0];
+    }
     
     
 }

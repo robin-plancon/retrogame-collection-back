@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const gameDataMapper = {
   
-  async getGames() {
+  getGames: async function () {
     try{
       const result = await axios(
         
@@ -25,7 +25,8 @@ const gameDataMapper = {
     }
     
   },
-  async getOneGame(id) {
+
+  getOneGame: async function (id) {
     try{
       const result = await axios(
         
