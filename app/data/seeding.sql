@@ -1,9 +1,9 @@
 -- SQLBook: Code
 -- Insérer trois utilisateurs fictifs avec noms et adresses
 INSERT INTO "user" ("email", "nickname", "password") VALUES
-    ('flo@example.com', 'Flo', 'motdepasse1'),
-    ('lionel@example.com', 'Lionel', 'motdepasse2'),
-    ('vanessa@example.com', 'Vanessa', 'motdepasse3');
+    ('flo@example.com', 'Flo', 'motdEpasse1@'),
+    ('lionel@example.com', 'Lionel', 'Motdepasse2@'),
+    ('vanessa@example.com', 'Vanessa', 'mOtdepasse3@');
 
 -- Insérer les jeux avec les ID spécifiés
 INSERT INTO "game" ("api_id", "slug") VALUES

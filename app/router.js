@@ -16,6 +16,7 @@ router.get("/user/:id/collection", collectionController.getCollection);
 router.post("/user/collection/:slug/:gameApiId", collectionController.postCollection);
 router.delete("/user/collection/:gameApiId", collectionController.deleteFromCollection);
 
-router.post("/signup", validationService.checkForm, userController.signUp);
+router.post("/signup", validationService.checkSignUpForm, userController.signUp);
+router.post("/login", validationService.checkLoginForm, userController.login);
 
 module.exports = router;

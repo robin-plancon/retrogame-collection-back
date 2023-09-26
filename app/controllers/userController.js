@@ -16,6 +16,7 @@ const userController = {
             res.status(500).json(error.toString())
         }
     },
+
     signUp : async function (req,res) {
         try {
             let {nickname, email, password, confirmation } = req.body;
@@ -23,6 +24,9 @@ const userController = {
             if (password == confirmation){
                 password = await bcrypt.hash(password, parseInt(process.env.SALT));
                 const newUser = await userDataMapper.signUp(nickname, email, password);
+                //storing user information into session
+                delete newUser.password;
+                req.session.user = newUser;
                 res.json(newUser)
             }
             else {
@@ -50,6 +54,26 @@ const userController = {
         }
         
     },
+
+    login : async function(req, res) {
+      try{
+      const {nickname, password} = req.body;
+      const targetUser = await userDataMapper.getUserByNickname(nickname);
+      if (!targetUser) {
+        return res.json("Couple login/mot de passe incorrect !");
+      }
+      const isGoodPass = await bcrypt.compare(password, targetUser.password);
+      if (!isGoodPass){
+        return res.json("Couple login/mot de passe incorrect !");
+      }
+      
+      req.session.user = targetUser;
+      delete req.session.user.password;
+      return res.json(targetUser);
+    } catch (error) {
+      return res.status(500).json(error.toString())
+  };
+    }
 }
 
 module.exports = userController;
