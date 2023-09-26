@@ -4,6 +4,7 @@ const express = require('express');
 const router = require('./app/router');
 const session = require('express-session');
 const RedisStore = require("connect-redis").default;
+const notFound404 = require("./app/middlewares/notFound404")
 
 const redisClient = require("./app/service/redisClient");
 let redisStore = new RedisStore({
@@ -27,6 +28,8 @@ app.use(session({
 }));
 
 app.use(router);
+
+app.use(notFound404);
 
 const port = process.env.PORT;
 app.listen(port, () => {

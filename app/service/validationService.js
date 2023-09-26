@@ -19,10 +19,16 @@ const schemaUserLogin = Joi.object({
     password:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
 }).required();
 
-const validationService = {
+const schemaUserNewPassword = Joi.object({
+    currentPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
+    newPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
+    confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
+}).required();
 
+const validationService = {
+    
     checkSignUpForm(req, res, next){
-         const {error} = schemaUserInput.validate(req.body)
+        const {error} = schemaUserInput.validate(req.body)
         
         if(!error){
             next()
@@ -32,7 +38,7 @@ const validationService = {
             res.json(error.details[0].message)
         }
     },
-
+    
     checkLoginForm(req, res, next){
         const {error} = schemaUserLogin.validate(req.body)
         
@@ -43,9 +49,22 @@ const validationService = {
             
             res.json(error.details[0].message)
         }
-
+        
     },
-
+    
+    checkNewPasswordForm(req, res, next){
+        const {error} = schemaUserNewPassword.validate(req.body)
+        
+        if(!error){
+            next()
+        }
+        else{
+            
+            res.json(error.details[0].message)
+        }
+        
+    },
+    
 }
 
 module.exports = validationService;

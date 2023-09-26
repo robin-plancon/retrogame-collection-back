@@ -25,7 +25,7 @@ const gameDataMapper = {
     }
     
   },
-
+  
   getOneGame: async function (id) {
     try{
       const result = await axios(

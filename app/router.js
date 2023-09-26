@@ -8,15 +8,18 @@ const collectionController = require("./controllers/collectionController");
 const validationService = require("./service/validationService");
 
 router.get("/", gameController.getGames);
-router.get("/game/:id", gameController.getOneGame);
+router.get("/game/:id(\\d+)", gameController.getOneGame);
 
-router.get("/user/:id", userController.getUserDetail);
+router.get("/user/:id(\\d+)", userController.getUserDetail);
+router.patch ("/user/:id(\\d+)", validationService.checkNewPasswordForm, userController.patchUser);
 
-router.get("/user/:id/collection", collectionController.getCollection);
-router.post("/user/collection/:slug/:gameApiId", collectionController.postCollection);
-router.delete("/user/collection/:gameApiId", collectionController.deleteFromCollection);
+router.get("/user/:id(\\d+)/collection", collectionController.getCollection);
+router.post("/user/collection/:slug/:gameApiId(\\d+)", collectionController.postCollection);
+router.delete("/user/collection/:gameApiId(\\d+)", collectionController.deleteFromCollection);
 
 router.post("/signup", validationService.checkSignUpForm, userController.signUp);
 router.post("/login", validationService.checkLoginForm, userController.login);
+router.get ("/logout", userController.logout);
+
 
 module.exports = router;
