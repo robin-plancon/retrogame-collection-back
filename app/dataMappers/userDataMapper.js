@@ -32,6 +32,12 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [newPassword, userId]);
         return null;
     },
+
+    deleteUser: async function (userId) {
+        const sqlQuery = `DELETE FROM "user" WHERE id = $1`;
+        const result = await client.query(sqlQuery, [userId]);
+        return result.rows[0];
+    },
 }
 
 

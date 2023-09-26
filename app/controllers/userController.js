@@ -108,7 +108,18 @@ const userController = {
       return res.status(500).json(error.toString());
       
     }
-  }
+  },
+
+  deleteUser : async function (req, res) {
+    try {
+      const userId = req.session.user.id
+    
+    const deletedUser = await userDataMapper.deleteUser(1)
+    return res.json("Votre compte a bien été supprimé !")
+    } catch (error) {
+    return res.status(500).json(error.toString());
+    }
+  },
 }
 
 module.exports = userController;

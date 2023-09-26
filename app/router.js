@@ -12,6 +12,7 @@ router.get("/game/:id(\\d+)", gameController.getOneGame);
 
 router.get("/user/:id(\\d+)", userController.getUserDetail);
 router.patch ("/user/:id(\\d+)", validationService.checkNewPasswordForm, userController.patchUser);
+router.delete("/user/delete", userController.deleteUser);
 
 router.get("/user/:id(\\d+)/collection", collectionController.getCollection);
 router.post("/user/collection/:slug/:gameApiId(\\d+)", collectionController.postCollection);

@@ -30,22 +30,22 @@ const collectionController = {
             res.status(500).json(error.toString())
         }
     },
-
+    
     deleteFromCollection : async function (req, res) {
-try {
-    const gameApiId = req.params.gameApiId
-    const userId = req.session.user.id
-
-    const gameToDelete = await collectionDataMapper.deleteFromCollection(userId, gameApiId);
-
-    res.json(gameToDelete);
-
-} catch (error) {
-    res.status(500).json(error.toString())
-}
+        try {
+            const gameApiId = req.params.gameApiId
+            const userId = req.session.user.id
+            
+            const gameToDelete = await collectionDataMapper.deleteFromCollection(userId, gameApiId);
+            
+            res.json(gameToDelete);
+            
+        } catch (error) {
+            res.status(500).json(error.toString())
+        }
         
     }
-
+    
     
 };
 
