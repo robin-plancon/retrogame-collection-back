@@ -4,7 +4,7 @@ const client = require('./dbClient.js');
 const collectionDataMapper = {
     
     
-    
+    // Retrieve Collection from User by its Id
     getCollection: async function (id) {
         
         const sqlQuery = `SELECT "api_id" FROM "game"
@@ -12,15 +12,17 @@ const collectionDataMapper = {
         WHERE "user_id" = $1;`
         const result = await client.query(sqlQuery, [id])
         console.log("Mes jeux :", result.rows)
-        const gamesIdsArray = [];
         
-        
+        // We store all the games ids from the user collection in gamesIdsArray
+        const gamesIdsArray = [];       
         result.rows.forEach(element => {
             gamesIdsArray.push(element.api_id)                 
         });
         
+        // Using ".join" on the games ids array so we can use them in the IGDB api request (cf l34)
         const gamesIds = gamesIdsArray.join();
         
+        // We retrieve all the details we need from the user's collection games by calling the IGDB api
         const games = await axios(
             
             { method: 'POST',
@@ -35,7 +37,9 @@ const collectionDataMapper = {
         console.log(games.data)
         return games.data;
     },
-    
+
+    /* 1- Add game to "game" table if not yet inside
+       2- Associate User Id with Game Id in "collection" table */
     postCollection: async function (userId, gameApiId, slug) {
         
         const gameQuery = `
@@ -69,6 +73,7 @@ const collectionDataMapper = {
         return newCollection.rows[0];
     },
     
+    // Remove a game from "collection" table
     deleteFromCollection: async function (userId, gameApiId) {
         
         const sqlQuery = `DELETE FROM "collection"
