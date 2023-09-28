@@ -7,7 +7,7 @@ const collectionController = require("./controllers/collectionController");
 
 const validationService = require("./service/validationService");
 
-router.get("/", gameController.getGames);
+router.get("/games", gameController.getGames);
 router.get("/game/:id(\\d+)", gameController.getOneGame);
 
 router.get("/user/:id(\\d+)", userController.getUserDetail);
