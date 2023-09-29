@@ -34,9 +34,12 @@ const userDataMapper = {
     },
 
     deleteUser: async function (userId) {
-        const sqlQuery = `DELETE FROM "user" WHERE id = $1`;
-        const result = await client.query(sqlQuery, [userId]);
-        return result.rows[0];
+        const collectionQuery = `DELETE FROM "collection" WHERE collection.user_id = $1`;
+        const collectionResult = await client.query(collectionQuery, [userId]);
+        const userQuery = `DELETE FROM "user" WHERE id = $1`;
+        const userResult = await client.query(userQuery, [userId]);
+        return userResult.rows[0];
+
     },
 }
 

@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 
 
 const userController = {
-  
+
+  // Retrieve User Details from database
   getUserDetail : async function (req,res) {
     try {
       const targetId = req.params.id;
@@ -17,10 +18,11 @@ const userController = {
       res.status(500).json(error.toString())
     }
   },
-  
+
+  // Allow visitor to create a user account
   signUp : async function (req,res) {
     try {
-      let {nickname, email, password, confirmation } = req.body;
+      let {nickname, email, password, confirmation} = req.body;
       
       if (password == confirmation){
         password = await bcrypt.hash(password, parseInt(process.env.SALT));
@@ -31,41 +33,43 @@ const userController = {
         res.json(newUser)
       }
       else {
-        res.json("La confirmation et le mot de passe ne sont pas identiques")
+        res.json({message : "La confirmation et le mot de passe ne sont pas identiques", status : "Error"})
       };
       
     }
     catch (error) {
+      // 23505 = Violation of unique constraint code.
       if (error.code === '23505') {
-        // Contrainte d'unicité violée
+        
         if (error.detail.includes('nickname')) {
-          res.status(400).json({ message: "Ce pseudo est déjà utilisé." });
+          res.status(400).json({ message: "Ce pseudo est déjà utilisé.", status : "Error" });
         } else if (error.detail.includes('email')) {
-          res.status(400).json({ message: "Cet email est déjà utilisé." });
+          res.status(400).json({ message: "Cet email est déjà utilisé.", status : "Error" });
         } else {
-          // Autre erreur inattendue
+          // Other unexpected error
           console.error(error);
-          res.status(500).json({ message: "Erreur interne du serveur." });
+          res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
         }
       } else {
-        // Autre erreur inattendue
+        // Other unexpected error
         console.error(error);
-        res.status(500).json({ message: "Erreur interne du serveur." });
+        res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
       }
     }
     
   },
   
+  // Allow user to connect to its account
   login : async function(req, res) {
     try{
       const {nickname, password} = req.body;
       const targetUser = await userDataMapper.getUserByNickname(nickname);
       if (!targetUser) {
-        return res.json("Couple login/mot de passe incorrect !");
+        return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
       const isGoodPass = await bcrypt.compare(password, targetUser.password);
       if (!isGoodPass){
-        return res.json("Couple login/mot de passe incorrect !");
+        return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
       
       req.session.user = targetUser;
@@ -77,11 +81,13 @@ const userController = {
     
   },
   
+  // Allow user to disconnect from its account 
   logout : function (req, res) {
     delete req.session.user;
-      return res.send ("Vous êtes déconnecté !");
+      return res.send ({message : "Vous êtes déconnecté !", status : "Success"});
   },
   
+  // Allow user to modify its password
   patchUser : async function(req, res) {
     try {
       
@@ -91,16 +97,16 @@ const userController = {
       const user = await userDataMapper.getUserDetail(userId);
       const isGoodPass = await bcrypt.compare(currentPassword, user.password);
       if (!isGoodPass){
-        return res.json("Le mot de passe actuel est incorrect !");
+        return res.json({message :"Le mot de passe actuel est incorrect !", status : "Error"});
       }
       if (newPassword == confirmation) {
         newPassword = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
         await userDataMapper.patchUser(newPassword, userId);
-        return res.json("Votre mot de passe a été modifié avec succès !");
+        return res.json({message :"Votre mot de passe a été modifié avec succès !", status : "Success"});
         
       }
       else {
-        return res.json("La confirmation et le mot de passe ne sont pas identiques")
+        return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"})
       };
       
       
@@ -109,13 +115,14 @@ const userController = {
       
     }
   },
-
+  
+  // Allow user to delete its account
   deleteUser : async function (req, res) {
     try {
       const userId = req.session.user.id
     
     const deletedUser = await userDataMapper.deleteUser(1)
-    return res.json("Votre compte a bien été supprimé !")
+    return res.json({message : "Votre compte a bien été supprimé !", status : "Success"})
     } catch (error) {
     return res.status(500).json(error.toString());
     }
