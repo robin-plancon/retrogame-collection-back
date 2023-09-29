@@ -29,7 +29,7 @@ const userController = {
         const newUser = await userDataMapper.signUp(nickname, email, password);
         //storing user information into session
         delete newUser.password;
-        req.session.user = newUser;
+        
         res.json(newUser)
       }
       else {
