@@ -28,43 +28,43 @@ const schemaUserNewPassword = Joi.object({
 const validationService = {
     
     checkSignUpForm(req, res, next){
-        const {error} = schemaUserInput.validate(req.body)
+        const {error} = schemaUserInput.validate(req.body);
         
         if(!error){
-            next()
+            next();
         }
         else{
             
-            res.json(error.details[0].message)
+            res.json(error.details[0].message);
         }
     },
     
     checkLoginForm(req, res, next){
-        const {error} = schemaUserLogin.validate(req.body)
+        const {error} = schemaUserLogin.validate(req.body);
         
         if(!error){
-            next()
+            next();
         }
         else{
             
-            res.json(error.details[0].message)
+            res.json(error.details[0].message);
         }
         
     },
     
     checkNewPasswordForm(req, res, next){
-        const {error} = schemaUserNewPassword.validate(req.body)
+        const {error} = schemaUserNewPassword.validate(req.body);
         
         if(!error){
-            next()
+            next();
         }
         else{
             
-            res.json(error.details[0].message)
+            res.json(error.details[0].message);
         }
         
     },
     
-}
+};
 
 module.exports = validationService;

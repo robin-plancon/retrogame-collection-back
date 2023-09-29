@@ -4,7 +4,7 @@ const express = require('express');
 const router = require('./app/router');
 const session = require('express-session');
 const RedisStore = require("connect-redis").default;
-const notFound404 = require("./app/middlewares/notFound404")
+const notFound404 = require("./app/middlewares/notFound404");
 const cors = require('cors');
 
 const redisClient = require("./app/service/redisClient");

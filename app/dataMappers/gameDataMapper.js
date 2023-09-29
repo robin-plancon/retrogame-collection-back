@@ -21,7 +21,7 @@ const gameDataMapper = {
       return result.data;
     }
     catch (error) {
-      console.log(error)
+      console.log(error);
     }
     
   },
@@ -43,11 +43,11 @@ const gameDataMapper = {
       return result.data[0];
     }
     catch (error) {
-      console.log(error)
+      console.log(error);
     }
     
   },
-}
+};
 
 
 module.exports = gameDataMapper;

@@ -1,5 +1,6 @@
 const userDataMapper = require("../dataMappers/userDataMapper");
 const bcrypt = require('bcrypt');
+const securityService = require('../service/securityService');
 
 
 const userController = {
@@ -7,15 +8,15 @@ const userController = {
   // Retrieve User Details from database
   getUserDetail : async function (req,res) {
     try {
-      const targetId = req.params.id;
+      const targetId = req.session.user.id;
       
       const user = await userDataMapper.getUserDetail(targetId);
       console.log("User :", JSON.stringify(user, null, 2));
       //Voir avec le front comment gérer le cas ou l'utilisateur n'existe pas en BDD (erreur 404 ? comment ?)
-      res.json(user)
+      res.json(user);
       
     } catch (error) {
-      res.status(500).json(error.toString())
+      res.status(500).json(error.toString());
     }
   },
 
@@ -27,13 +28,11 @@ const userController = {
       if (password == confirmation){
         password = await bcrypt.hash(password, parseInt(process.env.SALT));
         const newUser = await userDataMapper.signUp(nickname, email, password);
-        //storing user information into session
-        delete newUser.password;
-        
-        res.json(newUser)
+        delete newUser.password;        
+        res.json(newUser);
       }
       else {
-        res.json({message : "La confirmation et le mot de passe ne sont pas identiques", status : "Error"})
+        res.json({message : "La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       };
       
     }
@@ -64,6 +63,7 @@ const userController = {
     try{
       const {nickname, password} = req.body;
       const targetUser = await userDataMapper.getUserByNickname(nickname);
+      console.log("Target user :", targetUser);
       if (!targetUser) {
         return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
@@ -71,12 +71,13 @@ const userController = {
       if (!isGoodPass){
         return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
-      
+      delete targetUser.password;
       req.session.user = targetUser;
-      delete req.session.user.password;
-      return res.json(targetUser);
-    } catch (error) {
-      return res.status(500).json(error.toString())
+      const token = securityService.getToken(targetUser);
+      console.log("Le Token lors du login:", token);
+      return res.json({token});
+      } catch (error) {
+      return res.status(500).json(error.toString());
     };
     
   },
@@ -106,7 +107,7 @@ const userController = {
         
       }
       else {
-        return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"})
+        return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       };
       
       
@@ -119,14 +120,14 @@ const userController = {
   // Allow user to delete its account
   deleteUser : async function (req, res) {
     try {
-      const userId = req.session.user.id
+      const userId = req.session.user.id;
     
-    const deletedUser = await userDataMapper.deleteUser(1)
-    return res.json({message : "Votre compte a bien été supprimé !", status : "Success"})
+    const deletedUser = await userDataMapper.deleteUser(1);
+    return res.json({message : "Votre compte a bien été supprimé !", status : "Success"});
     } catch (error) {
     return res.status(500).json(error.toString());
     }
   },
-}
+};
 
 module.exports = userController;

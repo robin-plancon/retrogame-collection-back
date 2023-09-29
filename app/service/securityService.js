@@ -7,12 +7,19 @@ const securityService = {
     },
 
 
-    checkToken(user,token){
+    checkToken(req, res, next){
+        const token = req.headers.authorization.split(" ")[1];
+        console.log("Token au moment di verify:", token);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = req.session.user
 
-        // On retourne la comparaison entre les valeurs des propriétés du token et le user présent en session
-        return user.nickname == decoded.nickname && user.mail == decoded.mail;
-    }
+        // On compare les valeurs des propriétés du token et du user présent en session
+        if (user.nickname == decoded.nickname && user.mail == decoded.mail) {
+            return next();
+        } else {           
+              return res.status(401).json({message: 'Accès non autorisé', status: "Error"});
+        };
+    },
 };
 
 

@@ -4,7 +4,7 @@ const router = express.Router();
 const gameController = require("./controllers/gameController");
 const userController = require("./controllers/userController");
 const collectionController = require("./controllers/collectionController");
-
+const securityService = require("./service/securityService");
 const validationService = require("./service/validationService");
 
 // Game routes
@@ -12,8 +12,8 @@ router.get("/games", gameController.getGames);
 router.get("/game/:id(\\d+)", gameController.getOneGame);
 
 // User routes
-router.get("/user/:id(\\d+)", userController.getUserDetail);
-router.patch ("/user/:id(\\d+)", validationService.checkNewPasswordForm, userController.patchUser);
+router.get("/user/profile", securityService.checkToken, userController.getUserDetail);
+router.patch ("/user/update", validationService.checkNewPasswordForm, userController.patchUser);
 router.delete("/user/delete", userController.deleteUser);
 
 // Collection routes
