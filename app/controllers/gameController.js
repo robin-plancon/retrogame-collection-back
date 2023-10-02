@@ -30,7 +30,19 @@ const gameController = {
             res.status(500).json({message: error.toString(), status : "Error"});
         }
         
-    }
+    },
+
+    getGameByName : async function (req, res) {
+        try {
+        const game = req.query.game;
+        const searchedGame = await gameDataMapper.getGameByName(game);
+        console.log("searchGame :",JSON.stringify(searchedGame, null, 2));
+        res.json({result: searchedGame, status : "Success"});
+
+        } catch (error) {
+        res.status(500).json({message: error.toString(), status : "Error"});
+        }
+    },
     
 };
 

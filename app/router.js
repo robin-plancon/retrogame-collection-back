@@ -10,6 +10,7 @@ const validationService = require("./service/validationService");
 // Game routes
 router.get("/games", gameController.getGames);
 router.get("/game/:id(\\d+)", gameController.getOneGame);
+router.get("/search", gameController.getGameByName);
 
 // User routes
 router.get("/user/profile", securityService.checkToken, userController.getUserDetail);
