@@ -75,7 +75,7 @@ const userController = {
       req.session.user = targetUser;
       const token = securityService.getToken(targetUser);
       console.log("Le Token lors du login:", token);
-      return res.json({token});
+      return res.json({token: token, user: targetUser, status : "Success"});
       } catch (error) {
       return res.status(500).json(error.toString());
     };
