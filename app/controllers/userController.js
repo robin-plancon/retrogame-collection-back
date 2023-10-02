@@ -13,10 +13,10 @@ const userController = {
       const user = await userDataMapper.getUserDetail(targetId);
       console.log("User :", JSON.stringify(user, null, 2));
       //Voir avec le front comment gérer le cas ou l'utilisateur n'existe pas en BDD (erreur 404 ? comment ?)
-      res.json(user);
+      res.json({result: user, status : "Success"});
       
     } catch (error) {
-      res.status(500).json(error.toString());
+      res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
 
@@ -29,7 +29,7 @@ const userController = {
         password = await bcrypt.hash(password, parseInt(process.env.SALT));
         const newUser = await userDataMapper.signUp(nickname, email, password);
         delete newUser.password;        
-        res.json(newUser);
+        res.json({result: newUser, status : "Success"});
       }
       else {
         res.json({message : "La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
@@ -112,7 +112,7 @@ const userController = {
       
       
     } catch (error) {
-      return res.status(500).json(error.toString());
+      return res.status(500).json({message: error.toString(), status: "Error"});
       
     }
   },
@@ -125,7 +125,7 @@ const userController = {
     const deletedUser = await userDataMapper.deleteUser(1);
     return res.json({message : "Votre compte a bien été supprimé !", status : "Success"});
     } catch (error) {
-    return res.status(500).json(error.toString());
+    return res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
 };

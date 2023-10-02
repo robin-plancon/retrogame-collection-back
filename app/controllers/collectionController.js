@@ -9,10 +9,10 @@ const collectionController = {
             const targetId = req.params.id;
             const collection = await collectionDataMapper.getCollection(targetId);
             
-            res.json(collection);
+            res.json({result: collection, status : "Success"});
             
         } catch (error) {
-            res.status(500).json(error.toString());
+            res.status(500).json({message: error.toString(), status : "Error"});
         }
         
     },
@@ -30,7 +30,7 @@ const collectionController = {
             res.send({message : "Jeu ajouté à la collection !", status : "Success"});
             
         } catch (error) {
-            res.status(500).json(error.toString());
+            res.status(500).json({message: error.toString(), status : "Error"});
         }
     },
 
@@ -42,10 +42,10 @@ const collectionController = {
             
             const gameToDelete = await collectionDataMapper.deleteFromCollection(userId, gameApiId);
             
-            res.json(gameToDelete);
+            res.json({result: gameToDelete, status : "Success"});
             
         } catch (error) {
-            res.status(500).json(error.toString());
+            res.status(500).json({message: error.toString(), status : "Error"});
         }
         
     }

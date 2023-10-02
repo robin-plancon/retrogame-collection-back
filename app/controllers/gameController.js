@@ -8,10 +8,10 @@ const gameController = {
             
             const games = await gameDataMapper.getGames();
             console.log("Games :",JSON.stringify(games, null, 2));
-            res.json(games);
+            res.json({result: games, status : "Success"});
             
         } catch (error) {
-            res.status(500).json(error.toString());
+            res.status(500).json({result: error.toString(), status : "Error"});
         }
         
     },
@@ -24,10 +24,10 @@ const gameController = {
             
             const game = await gameDataMapper.getOneGame(targetId);
             console.log("Game :",JSON.stringify(game, null, 2));
-            res.json(game);          
+            res.json({result: game, status : "Success"});          
             
         } catch (error) {
-            res.status(500).json(error.toString());
+            res.status(500).json({message: error.toString(), status : "Error"});
         }
         
     }
