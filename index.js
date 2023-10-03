@@ -18,6 +18,7 @@ app.use(cors(
   {
     origin: process.env.CLIENT_URL,
     credentials: true,
+    methods: ['POST', 'PUT', 'GET', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
   }
 ));
 // On demande à Express d'extraire les données des requêtes POST
@@ -29,8 +30,8 @@ app.use(express.json());
 app.use(session({
   store: redisStore,
   secret: process.env.PG_SESSION_SECRET,
-  resave: true,
-  saveUninitialized: false
+  resave: true, 
+  saveUninitialized: false,
 }));
 
 app.use(router);
