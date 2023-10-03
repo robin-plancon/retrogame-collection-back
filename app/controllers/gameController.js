@@ -31,7 +31,8 @@ const gameController = {
         }
         
     },
-
+    
+    // Retrieve one game by its name with details from IGDB API
     getGameByName : async function (req, res) {
         try {
         const game = req.query.game;
@@ -43,7 +44,18 @@ const gameController = {
         res.status(500).json({message: error.toString(), status : "Error"});
         }
     },
-    
+    // Retrieve games with by their platform from IGDB API
+    getGamesByPlatform : async function (req, res) {
+        try {
+            const platformId = req.params.id;
+            const platform = await gameDataMapper.getGamesByPlatform(platformId);
+            console.log(platform)
+            res.json({result: platform,status : "Success"});
+            
+        } catch (error) {
+            res.status(500).json({message: error.toString(), status : "Error"});
+        }
+    },
 };
 
 

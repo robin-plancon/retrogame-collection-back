@@ -13,7 +13,8 @@ const securityService = {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = req.session.user
 
-        // On compare les valeurs des propriétés du token et du user présent en session
+       
+        // We compare the user's data inside the token with the data from the session before allowing access to the user 
         if (user.nickname == decoded.nickname && user.mail == decoded.mail) {
             return next();
         } else {           
