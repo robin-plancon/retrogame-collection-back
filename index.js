@@ -26,7 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // On demande à Express d'extraire les données des requêtes POST formatées en JSON
 app.use(express.json());
-
+app.set("view engine", "ejs");
+app.set("views", "./app/views");
 app.use(session({
   store: redisStore,
   secret: process.env.PG_SESSION_SECRET,

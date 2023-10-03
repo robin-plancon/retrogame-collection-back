@@ -10,7 +10,7 @@ const collectionDataMapper = {
         const sqlQuery = `SELECT "api_id" FROM "game"
         JOIN "collection" ON game.id = collection.game_id
         WHERE "user_id" = $1;`
-        const result = await client.query(sqlQuery, [id]);
+        const result = await client.query(sqlQuery, [id]);        
         console.log("Mes jeux :", result.rows);
         
         // We store all the games ids from the user collection in gamesIdsArray
