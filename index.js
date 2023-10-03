@@ -14,7 +14,12 @@ let redisStore = new RedisStore({
 });
 
 const app = express();
-app.use(cors());
+app.use(cors(
+  {
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }
+));
 // On demande à Express d'extraire les données des requêtes POST
 app.use(express.urlencoded({ extended: true }));
 
@@ -24,7 +29,7 @@ app.use(express.json());
 app.use(session({
   store: redisStore,
   secret: process.env.PG_SESSION_SECRET,
-  resave: true, 
+  resave: true,
   saveUninitialized: false
 }));
 

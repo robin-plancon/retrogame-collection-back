@@ -18,9 +18,9 @@ router.patch ("/user/update", validationService.checkNewPasswordForm, userContro
 router.delete("/user/delete", userController.deleteUser);
 
 // Collection routes
-router.get("/user/:id(\\d+)/collection", collectionController.getCollection);
-router.post("/user/collection/:slug/:gameApiId(\\d+)", collectionController.postCollection);
-router.delete("/user/collection/:gameApiId(\\d+)", collectionController.deleteFromCollection);
+router.get("/user/:id(\\d+)/collection", securityService.checkToken, collectionController.getCollection);
+router.post("/user/collection/:gameApiId(\\d+)", securityService.checkToken, collectionController.postCollection);
+router.delete("/user/collection/:gameApiId(\\d+)", securityService.checkToken, collectionController.deleteFromCollection);
 
 // Authentication routes
 router.post("/signup", validationService.checkSignUpForm, userController.signUp);

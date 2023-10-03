@@ -23,10 +23,9 @@ const collectionController = {
         try {
             const userId = req.session.user.id;
             const gameApiId = req.params.gameApiId;
-            const slug = req.params.slug;
+            const slug = req.body.slug;
             
             const collection = await collectionDataMapper.postCollection(userId, gameApiId, slug);
-            
             res.send({message : "Jeu ajouté à la collection !", status : "Success"});
             
         } catch (error) {
