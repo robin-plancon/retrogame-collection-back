@@ -100,7 +100,7 @@ const gameDataMapper = {
           'Client-ID': process.env.PG_CLIENT_ID,
           'Authorization': process.env.PG_AUTHORIZATION,
         },
-        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; where platforms = ${platformId};`
+        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; sort name asc; where platforms = ${platformId}; limit 500;`
       })
       console.log(result.data)
       return result.data;
