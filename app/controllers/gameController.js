@@ -7,7 +7,7 @@ const gameController = {
         try {
             
             const games = await gameDataMapper.getGames();
-            console.log("Games :",JSON.stringify(games, null, 2));
+            // console.log("Games :",JSON.stringify(games, null, 2));
             res.json({result: games, status : "Success"});
             
         } catch (error) {
@@ -23,6 +23,22 @@ const gameController = {
             const targetId = req.params.id;
             
             const game = await gameDataMapper.getOneGame(targetId);
+            console.log("Game :",JSON.stringify(game, null, 2));
+            res.json({result: game, status : "Success"});          
+            
+        } catch (error) {
+            res.status(500).json({message: error.toString(), status : "Error"});
+        }
+        
+    },
+
+    // Retrieve one game by its slug with details from IGDB API
+    getOneGameBySlug : async function (req, res) {
+        try {
+            
+            const slug = req.params.slug;
+            
+            const game = await gameDataMapper.getOneGameBySlug(slug);
             console.log("Game :",JSON.stringify(game, null, 2));
             res.json({result: game, status : "Success"});          
             

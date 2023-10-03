@@ -8,6 +8,7 @@ const collectionController = {
         try {
             const targetId = req.params.id;
             const collection = await collectionDataMapper.getCollection(targetId);
+            console.log("Collection :",JSON.stringify(collection, null, 2));
             
             res.json({result: collection, status : "Success"});
             

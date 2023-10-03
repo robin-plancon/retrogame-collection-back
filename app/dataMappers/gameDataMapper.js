@@ -65,6 +65,28 @@ const gameDataMapper = {
     }
     
   },
+
+  // Retrieve one game by its slug with details from IGDB API
+  getOneGameBySlug: async function (slug) {
+    try{
+      const result = await axios(
+        
+        { method: 'POST',
+        url: "https://api.igdb.com/v4/games",
+        headers: {
+          'Accept': 'application/json',
+          'Client-ID': process.env.PG_CLIENT_ID,
+          'Authorization': process.env.PG_AUTHORIZATION,
+        },
+        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; where slug="${slug}";`
+      })
+      return result.data[0];
+    }
+    catch (error) {
+      console.log(error);
+    }
+    
+  },
   
   // Retrieve one game by its name with details from IGDB API
   getGameByName : async function (game) {
