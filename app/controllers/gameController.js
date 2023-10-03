@@ -41,6 +41,22 @@ const gameController = {
         }
         
     },
+
+    // Retrieve one game by its slug with details from IGDB API
+    getOneGameBySlug : async function (req, res) {
+        try {
+            
+            const slug = req.params.slug;
+            
+            const game = await gameDataMapper.getOneGameBySlug(slug);
+            console.log("Game :",JSON.stringify(game, null, 2));
+            res.json({result: game, status : "Success"});          
+            
+        } catch (error) {
+            res.status(500).json({message: error.toString(), status : "Error"});
+        }
+        
+    },
     
     // Retrieve one game by its name with details from IGDB API
     getGameByName : async function (req, res) {
