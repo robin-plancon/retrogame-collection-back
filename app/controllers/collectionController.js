@@ -8,6 +8,11 @@ const collectionController = {
         try {
             const targetId = req.params.id;
             const collection = await collectionDataMapper.getCollection(targetId);
+            for (const game of collection) {
+                if (game.cover)
+                {game.cover.url=game.cover.url.replace("thumb", "cover_big") };
+                
+            }
             
             res.json({result: collection, status : "Success"});
             
