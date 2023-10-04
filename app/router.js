@@ -17,8 +17,8 @@ router.get("/platform/:id(\\d+)/games", gameController.getGamesByPlatform);
 
 // User routes
 router.get("/user/profile", securityService.checkToken, userController.getUserDetail);
-router.patch ("/user/update", validationService.checkNewPasswordForm, userController.patchUser);
-router.delete("/user/delete", userController.deleteUser);
+router.patch ("/user/update", securityService.checkToken, validationService.checkNewPasswordForm, userController.patchUser);
+router.delete("/user/delete", securityService.checkToken, userController.deleteUser);
 
 // Collection routes
 router.get("/user/:id(\\d+)/collection", securityService.checkToken, collectionController.getCollection);
