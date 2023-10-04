@@ -6,6 +6,7 @@ const userController = require("./controllers/userController");
 const collectionController = require("./controllers/collectionController");
 const securityService = require("./service/securityService");
 const validationService = require("./service/validationService");
+const mailController = require("./controllers/mailController");
 
 // Game routes
 router.get("/games", gameController.getGames);
@@ -28,6 +29,9 @@ router.delete("/user/collection/:gameApiId(\\d+)", securityService.checkToken, c
 router.post("/signup", validationService.checkSignUpForm, userController.signUp);
 router.post("/login", validationService.checkLoginForm, userController.login);
 router.get ("/logout", userController.logout);
+
+// Mail routes
+router.get("/send-mail", mailController.sendMail);
 
 
 module.exports = router;
