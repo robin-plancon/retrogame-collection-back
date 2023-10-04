@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const securityService = {
 
+    // Methods for authentication Token
     getToken(user){
         return jwt.sign(user, process.env.JWT_SECRET);
     },
@@ -22,6 +23,36 @@ const securityService = {
               return res.status(401).json({message: 'Accès non autorisé', status: "Error"});
         };
     },
+
+
+    // Methods for forgotten password reset Token
+    generateResetToken(user){
+        return jwt.sign({ 
+            userId: user.id,
+            type: 'reset'
+        }, process.env.JWT_SECRET, { expiresIn: '10m' });
+    },
+
+    checkResetToken(req, res, next){
+        try {
+            const token = req.query.token; // Récupère le token depuis l'URL contenu dans le mail envoyé au user
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+            // Vérifie si le token est de type 'reset'
+            if (decoded.type !== 'reset') {
+                return res.status(401).json({ message: 'Token invalide', status: 'Error' });
+            }
+    
+            // Stocke l'ID de l'utilisateur dans la requête pour l'utiliser plus tard
+            req.userId = decoded.userId;
+    
+            next();
+        } catch (err) {
+            return res.status(401).json({ message: 'Token invalide ou expiré', status: 'Error' });
+        }
+    },
+    
+    
 };
 
 

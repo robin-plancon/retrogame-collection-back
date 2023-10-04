@@ -32,6 +32,8 @@ router.get ("/logout", userController.logout);
 
 // Mail routes
 router.get("/send-mail", mailController.sendMail);
+router.post("/reset-mail", mailController.askResetPasswordEmail);
+
 
 
 module.exports = router;

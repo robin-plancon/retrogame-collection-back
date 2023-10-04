@@ -1,4 +1,6 @@
+const userDataMapper = require('../dataMappers/userDataMapper');
 const transporter = require('../middlewares/mail');
+const securityService = require('../service/securityService');
 
 const mailController = {
 
@@ -20,7 +22,28 @@ await transporter.sendMail({
 
 
 };
-    },
+},
+
+    askResetPasswordEmail : async function (req, res) {
+
+        try {
+            const email = req.body.email;
+            
+            const targetUser = await userDataMapper.getUserByEmail(email);
+            console.log("Target email :", targetUser);
+            if (!targetUser) {
+                return res.json({message : "Cet email invalide !", status : "Error"})   
+            }
+            ;
+            console.log(securityService.generateResetToken(targetUser))
+            
+
+
+        } catch (error) {
+        return res.status(500).json(error.toString());
+        }
+},
+
 };
 
 module.exports = mailController;
