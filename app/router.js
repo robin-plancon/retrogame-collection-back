@@ -31,9 +31,8 @@ router.post("/login", validationService.checkLoginForm, userController.login);
 router.get ("/logout", userController.logout);
 
 // Mail routes
-
 router.post("/reset-mail", mailController.askResetPasswordEmail);
-router.post("/reset-form", mailController.handleResetForm);
+//router.post("/reset-form", mailController.handleResetForm);
 
 
 module.exports = router;

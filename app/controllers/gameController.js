@@ -62,7 +62,9 @@ const gameController = {
     getGameByName : async function (req, res) {
         try {
         const game = req.query.game;        
-        const searchedGame = await gameDataMapper.getGameByName(game);
+        const filteredPlatformId = req.query.platformId
+      
+        const searchedGame = await gameDataMapper.getGameByName(game, filteredPlatformId);
         for (const game of searchedGame) {
             if (game.cover)
             {game.cover.url=game.cover.url.replace("thumb", "cover_big") };

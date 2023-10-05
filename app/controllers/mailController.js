@@ -11,13 +11,13 @@ const mailController = {
             const email = req.body.email;
             
             const targetUser = await userDataMapper.getUserByEmail(email);
-            console.log("Target email :", targetUser);
+            //console.log("Target email :", targetUser);
             if (!targetUser) {
                 return res.json({message : "Cet email invalide !", status : "Error"})   
             }
             ;
             const token = securityService.generateResetToken(targetUser);
-            console.log("LE TOKEN :", token);
+            //console.log("LE TOKEN :", token);
 
             await transporter.sendMail({
                 from: 'retr0gamecollection.team@gmail.com',

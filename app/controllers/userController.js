@@ -11,7 +11,7 @@ const userController = {
       const targetId = req.session.user.id;
       
       const user = await userDataMapper.getUserDetail(targetId);
-      console.log("User :", JSON.stringify(user, null, 2));
+      
       //Voir avec le front comment gérer le cas ou l'utilisateur n'existe pas en BDD (erreur 404 ? comment ?)
       res.json({result: user, status : "Success"});
       
@@ -46,13 +46,11 @@ const userController = {
           res.status(400).json({ message: "Cet email est déjà utilisé.", status : "Error" });
         } else {
           // Other unexpected error
-          console.error(error);
-          res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
+         res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
         }
       } else {
         // Other unexpected error
-        console.error(error);
-        res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
+         res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
       }
     }
     
@@ -64,7 +62,7 @@ const userController = {
       const {nickname, password} = req.body;
       // Verifying if the nickname provided exists in the database
       const targetUser = await userDataMapper.getUserByNickname(nickname);
-      console.log("Target user :", targetUser);
+      
       if (!targetUser) {
         return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
@@ -78,7 +76,7 @@ const userController = {
       req.session.user = targetUser;
       // Creating Json Web Token with user details and sending it to the client side to allow stronger authentication process
       const token = securityService.getToken(targetUser);
-      console.log("Le Token lors du login:", token);
+      
       return res.json({token: token, user: targetUser, status : "Success"});
       } catch (error) {
       return res.status(500).json(error.toString());
@@ -151,7 +149,7 @@ const userController = {
     }catch (error) {
     return res.status(500).json({message: error.toString(), status: "Error"});
     }    
-  }
+  },
 };
 
 
