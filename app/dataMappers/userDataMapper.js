@@ -43,9 +43,15 @@ const userDataMapper = {
         const userQuery = `DELETE FROM "user" WHERE id = $1`;
         const userResult = await client.query(userQuery, [userId]);
         return userResult.rows[0];
-
     },
-}
+
+    // Retrieve user by email from the database
+    getUserByEmail: async function(email) {
+        const sqlQuery = `SELECT * FROM "user" WHERE email = $1`;
+        const result = await client.query(sqlQuery, [email]);
+        return result.rows[0];    
+    },
+};
 
 
 

@@ -49,7 +49,7 @@ const gameController = {
             const slug = req.params.slug;
             
             const game = await gameDataMapper.getOneGameBySlug(slug);
-            console.log("Game :",JSON.stringify(game, null, 2));
+            
             res.json({result: game, status : "Success"});          
             
         } catch (error) {

@@ -133,6 +133,26 @@ const userController = {
     return res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
+  
+  handleResetForm : async function (req, res) {
+    try {
+      const {newPassword, confirmation} = req.body;
+      const userId = req.userId;
+
+      if (newPassword == confirmation) {
+        newPassword = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
+        await userDataMapper.patchUser(newPassword, userId);
+        return res.json({message :"Votre mot de passe a été modifié avec succès !", status : "Success"});
+      
+      }
+      else {
+        return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
+      } 
+    }catch (error) {
+    return res.status(500).json({message: error.toString(), status: "Error"});
+    }    
+  }
 };
+
 
 module.exports = userController;
