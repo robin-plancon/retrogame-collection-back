@@ -4,25 +4,6 @@ const securityService = require('../service/securityService');
 
 const mailController = {
 
-    sendMail : async function (req, res) {
-    try {
-
-        
-await transporter.sendMail({
-    from: 'retr0gamecollection.team@gmail.com',
-    to: "retr0gamecollection.team@gmail.com",
-    subject: 'Noiiiice',
-    text: 'Hello, this is a test email from my server'
-  });
-
-  res.send('Email sent successfully');
-} catch (error) {
-  console.error(error);
-  res.send('An error occurred');
-
-
-};
-},
 
     askResetPasswordEmail : async function (req, res) {
 
@@ -35,8 +16,19 @@ await transporter.sendMail({
                 return res.json({message : "Cet email invalide !", status : "Error"})   
             }
             ;
-            console.log(securityService.generateResetToken(targetUser))
+            const token = securityService.generateResetToken(targetUser);
+            console.log("LE TOKEN :", token);
+
+            await transporter.sendMail({
+                from: 'retr0gamecollection.team@gmail.com',
+                to: "florian.corlu@hotmail.fr",
+                subject: 'Réinitialisation du mot de passe',
+                text: `Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous (Attention, il n'est valable que 15 min): \n
+                http://localhost3000/reset-form?token=${token} `
+                
+              });
             
+              res.send('Email sent successfully');
 
 
         } catch (error) {
