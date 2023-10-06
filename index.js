@@ -15,10 +15,10 @@ app.use(cors(
     methods: ['POST', 'PUT', 'GET', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
   }
 ));
-// On demande à Express d'extraire les données des requêtes POST
+// Express is asked to extract data from POST requests
 app.use(express.urlencoded({ extended: true }));
 
-// On demande à Express d'extraire les données des requêtes POST formatées en JSON
+// Express is asked to extract data from POST requests formatted in JSON 
 app.use(express.json());
 
 app.use(session({

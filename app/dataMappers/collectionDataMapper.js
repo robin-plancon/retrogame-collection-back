@@ -73,10 +73,8 @@ const collectionDataMapper = {
         const gameToDelete = await client.query(sqlQuery, [userId, gameApiId]);
         
         return gameToDelete.rows[0];
-    }
-    
-    
-}
+    },
+};
 
 
 module.exports = collectionDataMapper;

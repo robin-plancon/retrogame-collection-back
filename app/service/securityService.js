@@ -10,7 +10,6 @@ const securityService = {
     
     checkToken(req, res, next){
         const token = req.headers.authorization.split(" ")[1];
-        // console.log("Token au moment di verify:", token);
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = req.session.user
        

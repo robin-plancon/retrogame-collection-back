@@ -14,19 +14,29 @@ const schemaUserInput = Joi.object({
 Consists of a minimum of 8 characters, at least one uppercase letter, at least one lowercase letter,
 At least one digit, and at least one special character." */
 
+// Schema of what is expected in the login form
 const schemaUserLogin = Joi.object({
     nickname:Joi.string().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9_-]{2,14}$')).required(),
     password:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
 }).required();
 
+// Schema of what is expected in the change password form
 const schemaUserNewPassword = Joi.object({
     currentPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
     newPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
     confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
 }).required();
 
+// Schema of what is expected in the forgotten password form
+const schemaUserForgottenPassword = Joi.object({
+    newPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
+    confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
+}).required();
+
+
 const validationService = {
-    
+    // Middleware to validate user input during the sign-up process
+    // Using Joi schema (schemaUserInput) to perform the validation.
     checkSignUpForm(req, res, next){
         const {error} = schemaUserInput.validate(req.body);
         
@@ -39,6 +49,8 @@ const validationService = {
         }
     },
     
+    // Middleware to validate user input during the sign-up process
+    // Using Joi schema (schemaUserLogin) to perform the validation.
     checkLoginForm(req, res, next){
         const {error} = schemaUserLogin.validate(req.body);
         
@@ -52,6 +64,8 @@ const validationService = {
         
     },
     
+    // Middleware to validate user input during the sign-up process
+    // Using Joi schema (schemaUserNewPassword) to perform the validation.
     checkNewPasswordForm(req, res, next){
         const {error} = schemaUserNewPassword.validate(req.body);
         
