@@ -41,7 +41,7 @@ const collectionDataMapper = {
     /* 1- Add game to "game" table if not yet inside
        2- Associate User Id with Game Id in "collection" table */
     postCollection: async function (userId, gameApiId, slug) {
-        
+        // 
         const gameQuery = `
         SELECT insert_game($1, $2) AS game_id, $2 AS slug;
         `;

@@ -5,24 +5,25 @@ const gameData = require('../data/gameData.json');
 
 const gameDataMapper = {
   
-  // Retrieve all games from specific list of platforms from IGDB API
+  // Retrieve 500 random games from specific list of platforms from IGDB API
   getGames: async function () {
     
-    const randomIdsArray= []
-    
-    for (const id of gameData.gameIds) {
-      if (randomIdsArray.length >= 500) {
-        break;
-      }
+    /* Initialize an array to store 500 randomly retrieved game IDs.
+       Then Loop to fill the array with unique game IDs randomly selected from the game ids list retrieved from the IGDB API ("gameData")
+       until it reaches a length of 500.
+       Finally we call the IGDB API to get information on the 500 games
+    */
+    const randomIdsArray= [];
+    while (randomIdsArray.length < 500) {
+      
       const randomNumber= Math.floor( Math.random()*(gameData.gameIds.length));
       const randomApiId= gameData.gameIds[randomNumber];
       const checkDuplicate= randomIdsArray.some((id) => id == randomApiId ); 
       if (!checkDuplicate) {
-        randomIdsArray.push(randomApiId) 
+        randomIdsArray.push(randomApiId);
       }
     }
-    console.log("Le tableau avant requête :",randomIdsArray)
-    const randomIdsList= randomIdsArray.join()
+    const randomIdsList= randomIdsArray.join() 
     try{
       const result = await axios(
         
@@ -106,8 +107,7 @@ const gameDataMapper = {
           'Authorization': process.env.PG_AUTHORIZATION,
         },
         data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; search "${game}"; where platforms = ${platformIds};limit 500;`
-      })
-      //console.log(result.data.map(game => game.name));
+      })    
       return result.data;
     }
     catch (error) {
