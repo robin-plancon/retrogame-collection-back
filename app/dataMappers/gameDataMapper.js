@@ -1,7 +1,18 @@
 const axios = require('axios');
 require('dotenv').config();
 const gameData = require('../data/gameData.json');
+const e = require('cors');
 
+const fields = "fields id, cover.url, name, cover.height, cover.width, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary;";
+const platform_list = "4, 7, 15, 16, 18, 19, 22, 24, 25, 26, 27, 29, 30, 32, 33, 35, 50, 51, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 70, 71, 75, 78, 79, 80, 84, 86, 87, 88, 89, 90, 93, 94, 99, 114, 115, 117, 119, 120, 123, 128, 136, 142, 154, 158, 274, 373, 410"
+const platform_filter = (platformId) =>{
+  if (!platformId) {
+    return `where (release_dates.platform = (${platform_list}) & (release_dates.status != (1,2,3,5) | release_dates.status = null)) & keywords != (16696, 24124, 2004, 38055, 37841, 5340, 305)`;
+  }
+  else {
+    return `where (release_dates.platform = (${platformId}) & (release_dates.status != (1,2,3,5) | release_dates.status = null)) & keywords != (16696, 24124, 2004, 38055, 37841, 5340, 305)`;
+  }
+}
 
 const gameDataMapper = {
   
@@ -21,7 +32,7 @@ const gameDataMapper = {
         randomIdsArray.push(randomApiId) 
       }
     }
-    console.log("Le tableau avant requête :",randomIdsArray)
+    // console.log("Le tableau avant requête :",randomIdsArray)
     const randomIdsList= randomIdsArray.join()
     try{
       const result = await axios(
@@ -33,9 +44,9 @@ const gameDataMapper = {
           'Client-ID': process.env.PG_CLIENT_ID,
           'Authorization': process.env.PG_AUTHORIZATION,
         },
-        data: `fields id, cover.url, name, cover.height, cover.width, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; where platforms = (4, 7, 15, 16, 18, 19, 22, 24, 25, 26, 27, 29, 30, 32, 33, 35, 50, 51, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 70, 71, 75, 78, 79, 80, 84, 86, 87, 88, 89, 90, 93, 94, 99, 114, 115, 117, 119, 120, 123, 128, 136, 142, 154, 158, 274, 373, 410) & id=(${randomIdsList}); limit 500;`
+        data: `${fields} ${platform_filter()} & id=(${randomIdsList}); limit 500;`
       })
-      
+      console.log('result.data', result.data.length);
       return result.data;
     }
     catch (error) {
@@ -56,7 +67,7 @@ const gameDataMapper = {
           'Client-ID': process.env.PG_CLIENT_ID,
           'Authorization': process.env.PG_AUTHORIZATION,
         },
-        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; where id=${id};`
+        data: `${fields} where id=${id};`
       })
       return result.data[0];
     }
@@ -78,7 +89,7 @@ const gameDataMapper = {
           'Client-ID': process.env.PG_CLIENT_ID,
           'Authorization': process.env.PG_AUTHORIZATION,
         },
-        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; where slug="${slug}";`
+        data: `${fields} where slug="${slug}";`
       })
       return result.data[0];
     }
@@ -93,9 +104,6 @@ const gameDataMapper = {
     try {   
       /* By default we search on all the platforms, but if the user applied a filter and selected a specific platform,
       then the search will be on the filtered platform only */
-      let platformIds = "(4, 7, 15, 16, 18, 19, 22, 24, 25, 26, 27, 29, 30, 32, 33, 35, 50, 51, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 70, 71, 75, 78, 79, 80, 84, 86, 87, 88, 89, 90, 93, 94, 99, 114, 115, 117, 119, 120, 123, 128, 136, 142, 154, 158, 274, 373, 410)";
-      if (filteredPlatformId) {platformIds = filteredPlatformId};
-      console.log("platformIds après:", platformIds)
       const result = await axios(
         
         { method: 'POST',
@@ -105,7 +113,7 @@ const gameDataMapper = {
           'Client-ID': process.env.PG_CLIENT_ID,
           'Authorization': process.env.PG_AUTHORIZATION,
         },
-        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; search "${game}"; where platforms = ${platformIds};limit 500;`
+        data: `${fields} search "${game}"; ${filteredPlatformId ? platform_filter(filteredPlatformId) : platform_filter()};limit 500;`
       })
       //console.log(result.data.map(game => game.name));
       return result.data;
@@ -127,7 +135,7 @@ const gameDataMapper = {
           'Client-ID': process.env.PG_CLIENT_ID,
           'Authorization': process.env.PG_AUTHORIZATION,
         },
-        data: `fields id, cover.url, name, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary; sort name asc; where platforms = ${platformId}; limit 500;`
+        data: `${fields} sort name asc; where (release_dates.platform = ${platformId} & (release_dates.status != (1,2,3,5) | release_dates.status = null)) & keywords != (16696, 24124, 2004, 38055, 37841, 5340, 305); limit 500;`
       })
       console.log(result.data)
       return result.data;
