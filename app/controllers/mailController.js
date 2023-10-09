@@ -20,10 +20,10 @@ const mailController = {
 
             await transporter.sendMail({
                 from: 'retr0gamecollection.team@gmail.com',
-                to: "florian.corlu@hotmail.fr",
+                to: email,
                 subject: 'Réinitialisation du mot de passe',
                 text: `Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous (Attention, il n'est valable que 15 min): \n
-                http://localhost3000/reset-form?token=${token} `
+                ${process.env.CLIENT_URL}/reset-form/${token} `
                 
               });
             
