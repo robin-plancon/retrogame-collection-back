@@ -116,7 +116,6 @@ const gameDataMapper = {
         },
         data: `${fields} search "${game}"; ${filteredPlatformId ? platform_filter(filteredPlatformId) : platform_filter()};limit 500;`
       })
-      //console.log(result.data.map(game => game.name));
       return result.data;
     }
     catch (error) {

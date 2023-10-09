@@ -134,8 +134,7 @@ const userController = {
   
   handleResetForm : async function (req, res) {
     try {
-      const {newPassword, confirmation} = req.body;
-      const userId = req.userId;
+      const {newPassword, confirmation, userId} = req.body;
 
       if (newPassword == confirmation) {
         newPassword = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
@@ -150,6 +149,16 @@ const userController = {
     return res.status(500).json({message: error.toString(), status: "Error"});
     }    
   },
+
+  verifyResetToken : function (req, res) {
+    try {
+      securityService.checkResetToken(req, res);
+    
+    } catch (error) {
+    return res.status(500).json({message : error.toString(), status: "Error"});
+    }
+  },
+
 };
 
 

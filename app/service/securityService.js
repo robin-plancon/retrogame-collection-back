@@ -9,7 +9,7 @@ const securityService = {
     
     
     checkToken(req, res, next){
-        const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.authorization.split(" ")[1]; 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = req.session.user
        
@@ -31,26 +31,22 @@ const securityService = {
         }, process.env.JWT_SECRET, { expiresIn: '15m' });
     },
     
-    checkResetToken(req, res, next){
+    checkResetToken(req, res){
         try {
-            const token = req.query.token; // Récupère le token depuis l'URL contenu dans le mail envoyé au user
+            const token = req.body.token; // Retrieves the token from the body of the request sent by the front
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             
-            // Vérifie si le token est de type 'reset'
-            if (decoded.type !== 'reset') {
-                return res.status(401).json({ message: 'Token invalide', status: 'Error' });
+            // Checks if the token is of type 'reset'
+            if (decoded.type !== 'reset' || !decoded) {
+                return res.status(401).json({ message: 'Token invalide ou expiré', status: 'Error' });
             }
             
-            // Stocke l'ID de l'utilisateur dans la requête pour l'utiliser plus tard
-            req.userId = decoded.userId;
+            return res.status(200).json({ message: 'Token valide', status: 'Success' });
             
-            next();
         } catch (err) {
             return res.status(401).json({ message: 'Token invalide ou expiré', status: 'Error' });
         }
     },
-    
-    
 };
 
 

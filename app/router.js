@@ -19,6 +19,8 @@ router.get("/platform/:id(\\d+)/games", gameController.getGamesByPlatform);
 router.get("/user/profile", securityService.checkToken, userController.getUserDetail);
 router.patch ("/user/update", securityService.checkToken, validationService.checkNewPasswordForm, userController.patchUser);
 router.delete("/user/delete", securityService.checkToken, userController.deleteUser);
+router.post("/check-reset-token", userController.verifyResetToken);
+router.post("/reset-form", validationService.checkForgottenPasswordForm, userController.handleResetForm);
 
 // Collection routes
 router.get("/user/:id(\\d+)/collection", securityService.checkToken, collectionController.getCollection);
@@ -31,8 +33,7 @@ router.post("/login", validationService.checkLoginForm, userController.login);
 router.get ("/logout", userController.logout);
 
 // Mail routes
-router.post("/reset-mail", mailController.askResetPasswordEmail);
-//router.post("/reset-form", mailController.handleResetForm);
+router.post("/reset-mail", validationService.checkForgottenPasswordMailInput,mailController.askResetPasswordEmail);
 
 
 module.exports = router;

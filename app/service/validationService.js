@@ -3,7 +3,7 @@ const Joi = require('joi');
 
 
 // Schema of what is expected in the registration form
-const schemaUserInput = Joi.object({
+const schemaUserSignup = Joi.object({
     email:Joi.string().email().required(),
     nickname:Joi.string().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9_-]{2,14}$')).required(),
     password:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
@@ -33,12 +33,18 @@ const schemaUserForgottenPassword = Joi.object({
     confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
 }).required();
 
+//
+const schemaForgottenPasswordMailInput = Joi.object({
+    email:Joi.string().email().required(),
+}).required();
+
+
 
 const validationService = {
     // Middleware to validate user input during the sign-up process
-    // Using Joi schema (schemaUserInput) to perform the validation.
+    // Using Joi schema (schemaUserSignup) to perform the validation.
     checkSignUpForm(req, res, next){
-        const {error} = schemaUserInput.validate(req.body);
+        const {error} = schemaUserSignup.validate(req.body);
         
         if(!error){
             next();
@@ -49,7 +55,7 @@ const validationService = {
         }
     },
     
-    // Middleware to validate user input during the sign-up process
+    // Middleware to validate user input during the login process
     // Using Joi schema (schemaUserLogin) to perform the validation.
     checkLoginForm(req, res, next){
         const {error} = schemaUserLogin.validate(req.body);
@@ -64,7 +70,7 @@ const validationService = {
         
     },
     
-    // Middleware to validate user input during the sign-up process
+    // Middleware to validate user input during the password change process
     // Using Joi schema (schemaUserNewPassword) to perform the validation.
     checkNewPasswordForm(req, res, next){
         const {error} = schemaUserNewPassword.validate(req.body);
@@ -79,6 +85,34 @@ const validationService = {
         
     },
     
+    // Middleware to validate user input during the forgotten password reset process
+    // Using Joi schema (schemaUserForgottenPassword) to perform the validation.
+    checkForgottenPasswordForm(req, res, next){
+        const {error} = schemaUserForgottenPassword.validate(req.body);
+        
+        if(!error){
+            next();
+        }
+        else{
+            
+            res.json(error.details[0].message);
+        }
+        
+    },
+    // Middleware to validate user input during the request of a reset password mail in the the forgotten password reset process
+    // Using Joi schema (schemaForgottenPasswordMailInput) to perform the validation.
+    checkForgottenPasswordMailInput(req, res, next){
+        const {error} = schemaForgottenPasswordMailInput.validate(req.body);
+        
+        if(!error){
+            next();
+        }
+        else{
+            
+            res.json(error.details[0].message);
+        }
+        
+    },
 };
 
 module.exports = validationService;
