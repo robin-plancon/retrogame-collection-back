@@ -4,10 +4,12 @@ const securityService = require('../service/securityService');
 const jwt = require('jsonwebtoken');
 
 const userController = {
-
+  
   // Retrieve User Details from database
   getUserDetail : async function (req,res) {
     try {
+      
+      
       const targetId = req.session.user.id;
       
       const user = await userDataMapper.getUserDetail(targetId);
@@ -19,7 +21,7 @@ const userController = {
       res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
-
+  
   // Allow visitor to create a user account
   signUp : async function (req,res) {
     try {
@@ -46,11 +48,11 @@ const userController = {
           res.status(400).json({ message: "Cet email est déjà utilisé.", status : "Error" });
         } else {
           // Other unexpected error
-         res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
+          res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
         }
       } else {
         // Other unexpected error
-         res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
+        res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
       }
     }
     
@@ -78,7 +80,7 @@ const userController = {
       const token = securityService.getToken(targetUser);
       
       return res.json({token: token, user: targetUser, status : "Success"});
-      } catch (error) {
+    } catch (error) {
       return res.status(500).json(error.toString());
     };
     
@@ -87,7 +89,7 @@ const userController = {
   // Allow user to disconnect from its account by removing its details from the session
   logout : function (req, res) {
     delete req.session.user;
-      return res.send ({message : "Vous êtes déconnecté !", status : "Success"});
+    return res.send ({message : "Vous êtes déconnecté !", status : "Success"});
   },
   
   // Allow user to modify its password
@@ -124,14 +126,15 @@ const userController = {
   deleteUser : async function (req, res) {
     try {
       const userId = req.session.user.id;
-    
-    const deletedUser = await userDataMapper.deleteUser(userId);
-    return res.json({message : "Votre compte a bien été supprimé !", status : "Success"});
+      
+      const deletedUser = await userDataMapper.deleteUser(userId);
+      return res.json({message : "Votre compte a bien été supprimé !", status : "Success"});
     } catch (error) {
-    return res.status(500).json({message: error.toString(), status: "Error"});
+      return res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
   
+  // Allow user who forgot its password to reset it
   handleResetForm : async function (req, res) {
     try {
       const {newPassword, confirmation, token} = req.body;
@@ -142,25 +145,26 @@ const userController = {
         password = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
         await userDataMapper.patchUser(password, userId);
         return res.json({message :"Votre mot de passe a été modifié avec succès !", status : "Success"});
-      
+        
       }
       else {
         return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       } 
     }catch (error) {
-    return res.status(500).json({message: error.toString(), status: "Error"});
+      return res.status(500).json({message: error.toString(), status: "Error"});
     }    
   },
-
+  
+  // Verify if the user's "forgotten password token" is valid and sends the information to Front end
   verifyResetToken : function (req, res) {
     try {
       securityService.checkResetToken(req, res);
-    
+      
     } catch (error) {
-    return res.status(500).json({message : error.toString(), status: "Error"});
+      return res.status(500).json({message : error.toString(), status: "Error"});
     }
   },
-
+  
 };
 
 
