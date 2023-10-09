@@ -30,7 +30,8 @@ const schemaUserNewPassword = Joi.object({
 // Schema of what is expected in the forgotten password form
 const schemaUserForgottenPassword = Joi.object({
     newPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
-    confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
+    confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
+    token:Joi.string().required()
 }).required();
 
 //

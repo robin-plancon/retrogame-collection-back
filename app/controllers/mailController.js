@@ -23,11 +23,11 @@ const mailController = {
                 to: email,
                 subject: 'Réinitialisation du mot de passe',
                 text: `Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous (Attention, il n'est valable que 15 min): \n
-                ${process.env.CLIENT_URL}/reset-form/${token} `
+                ${process.env.CLIENT_URL}/reset-form?token=${token} `
                 
               });
             
-              res.send('Email sent successfully');
+              res.send({message: 'Email sent successfully', status: 'Success'});
 
 
         } catch (error) {

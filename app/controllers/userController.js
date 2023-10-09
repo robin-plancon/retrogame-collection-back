@@ -1,7 +1,7 @@
 const userDataMapper = require("../dataMappers/userDataMapper");
 const bcrypt = require('bcrypt');
 const securityService = require('../service/securityService');
-
+const jwt = require('jsonwebtoken');
 
 const userController = {
 
@@ -134,11 +134,13 @@ const userController = {
   
   handleResetForm : async function (req, res) {
     try {
-      const {newPassword, confirmation, userId} = req.body;
+      const {newPassword, confirmation, token} = req.body;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.userId;
 
-      if (newPassword == confirmation) {
-        newPassword = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
-        await userDataMapper.patchUser(newPassword, userId);
+      if (newPassword === confirmation) {
+        password = await bcrypt.hash(newPassword, parseInt(process.env.SALT));
+        await userDataMapper.patchUser(password, userId);
         return res.json({message :"Votre mot de passe a été modifié avec succès !", status : "Success"});
       
       }
