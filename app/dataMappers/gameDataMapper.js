@@ -12,7 +12,7 @@ const platform_filter = (platformId) =>{
   else {
     return `where (release_dates.platform = (${platformId}) & (release_dates.status != (1,2,3,5) | release_dates.status = null)) & keywords != (16696, 24124, 2004, 38055, 37841, 5340, 305)`;
   }
-}
+};
 
 const gameDataMapper = {
   
@@ -20,9 +20,9 @@ const gameDataMapper = {
   getGames: async function () {
     
     /* Initialize an array to store 500 randomly retrieved game IDs.
-       Then Loop to fill the array with unique game IDs randomly selected from the game ids list retrieved from the IGDB API ("gameData")
-       until it reaches a length of 500.
-       Finally we call the IGDB API to get information on the 500 games
+    Then Loop to fill the array with unique game IDs randomly selected from the game ids list retrieved from the IGDB API ("gameData")
+    until it reaches a length of 500.
+    Finally we call the IGDB API to get information on the 500 games
     */
     const randomIdsArray= [];
     while (randomIdsArray.length < 500) {
@@ -47,7 +47,7 @@ const gameDataMapper = {
         },
         data: `${fields} ${platform_filter()} & id=(${randomIdsList}); limit 500;`
       })
-      console.log('result.data', result.data.length);
+      
       return result.data;
     }
     catch (error) {
@@ -77,7 +77,7 @@ const gameDataMapper = {
     }
     
   },
-
+  
   // Retrieve one game by its slug with details from IGDB API
   getOneGameBySlug: async function (slug) {
     try{

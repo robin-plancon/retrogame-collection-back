@@ -19,7 +19,7 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [nickname, email, password]);
         return result.rows[0];
     },
-
+    
     // Retrieve user by nickname from the database
     getUserByNickname: async function(nickname) {
         const sqlQuery = `SELECT * FROM "user" WHERE nickname = $1`;
@@ -33,10 +33,10 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [newPassword, userId]);
         return null;
     },
-
+    
     /* Allow user to delete its account :
-            1- We delete entries from "collection" table in the database related to the user
-            2- We delete user related entry from "user" table in the database */
+    1- We delete entries from "collection" table in the database related to the user
+    2- We delete user related entry from "user" table in the database */
     deleteUser: async function (userId) {
         const collectionQuery = `DELETE FROM "collection" WHERE collection.user_id = $1`;
         const collectionResult = await client.query(collectionQuery, [userId]);
@@ -44,7 +44,7 @@ const userDataMapper = {
         const userResult = await client.query(userQuery, [userId]);
         return userResult.rows[0];
     },
-
+    
     // Retrieve user by email from the database
     getUserByEmail: async function(email) {
         const sqlQuery = `SELECT * FROM "user" WHERE email = $1`;

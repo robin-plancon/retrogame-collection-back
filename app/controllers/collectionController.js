@@ -2,13 +2,14 @@ const collectionDataMapper = require('../dataMappers/collectionDataMapper')
 
 
 const collectionController = {
-
+    
     // Retrieve Collection from User by its Id
     getCollection : async function (req, res) {
         try {
             const targetId = req.params.id;
             const collection = await collectionDataMapper.getCollection(targetId);
-
+            
+            // Pictures size from the IGDB API are defined inside the pictures url, so we used ".replace" method to resize them as needed
             for (const game of collection) {
                 if (game.cover)
                 {game.cover.url=game.cover.url.replace("thumb", "cover_big") };
@@ -22,9 +23,9 @@ const collectionController = {
         }
         
     },
-
+    
     /* 1- Add game to "game" table if not yet inside
-       2- Associate User Id with Game Id in "collection" table */
+    2- Associate User Id with Game Id in "collection" table */
     postCollection : async function (req, res) {
         try {
             const userId = req.session.user.id;
@@ -38,7 +39,7 @@ const collectionController = {
             res.status(500).json({message: error.toString(), status : "Error"});
         }
     },
-
+    
     // Remove a game from "collection" table
     deleteFromCollection : async function (req, res) {
         try {

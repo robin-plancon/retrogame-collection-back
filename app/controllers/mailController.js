@@ -4,20 +4,23 @@ const securityService = require('../service/securityService');
 
 const mailController = {
 
-
+    // Manage the sending of the reset email for forgotten passwords
     askResetPasswordEmail : async function (req, res) {
 
         try {
-            const email = req.body.email;
+            const { email } = req.body;
             
+            // We verify in the database if the user exists.
             const targetUser = await userDataMapper.getUserByEmail(email);
             
             if (!targetUser) {
                 return res.json({message : "Cet email est invalide !", status : "Error"})   
             }
             ;
+            // We create a json web token with the user details inside
             const token = securityService.generateResetToken(targetUser);
 
+            // We send the email containing the reset password link with the token inside the url to the user
             await transporter.sendMail({
                 from: 'retr0gamecollection.team@gmail.com',
                 to: email,

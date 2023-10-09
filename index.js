@@ -14,24 +14,25 @@ app.use(cors(
     credentials: true,
     methods: ['POST', 'PUT', 'GET', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
   }
-));
-// Express is asked to extract data from POST requests
-app.use(express.urlencoded({ extended: true }));
-
-// Express is asked to extract data from POST requests formatted in JSON 
-app.use(express.json());
-
-app.use(session({
-  secret: process.env.PG_SESSION_SECRET,
-  resave: true, 
-  saveUninitialized: false,
-}));
-
-app.use(router);
-
-app.use(notFound404);
-
-const port = process.env.PORT;
-app.listen(port, () => {
-  console.log(`API demarrée sur http://localhost:${port}`);
-});
+  ));
+  
+  // Express is asked to extract data from POST requests
+  app.use(express.urlencoded({ extended: true }));
+  
+  // Express is asked to extract data from POST requests formatted in JSON 
+  app.use(express.json());
+  
+  app.use(session({
+    secret: process.env.PG_SESSION_SECRET,
+    resave: true, 
+    saveUninitialized: false,
+  }));
+  
+  app.use(router);
+  
+  app.use(notFound404);
+  
+  const port = process.env.PORT;
+  app.listen(port, () => {
+    console.log(`API demarrée sur http://localhost:${port}`);
+  });

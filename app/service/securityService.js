@@ -12,10 +12,10 @@ const securityService = {
         const token = req.headers.authorization.split(" ")[1]; 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = req.session.user
-       
+        
         // We compare the user's data inside the token with the data from the session before allowing access to the user 
         if (user.nickname == decoded.nickname && user.mail == decoded.mail) {
-         
+            
             return next();
         } else {           
             return res.status(401).json({message: 'Accès non autorisé', status: "Error"});
