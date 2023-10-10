@@ -16,8 +16,8 @@ At least one digit, and at least one special character." */
 
 // Schema of what is expected in the login form
 const schemaUserLogin = Joi.object({
-    nickname:Joi.string().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9_-]{2,14}$')).required(),
-    password:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
+    nickname:Joi.string().required(),
+    password:Joi.string().required()
 }).required();
 
 // Schema of what is expected in the change password form
@@ -52,7 +52,7 @@ const validationService = {
         }
         else{
             
-            res.json(error.details[0].message);
+            res.json({message: error.details[0].message, status: "Error"});
         }
     },
     
@@ -66,7 +66,7 @@ const validationService = {
         }
         else{
             
-            res.json(error.details[0].message);
+            res.json({message: error.details[0].message, status: "Error"});
         }
         
     },
@@ -81,7 +81,7 @@ const validationService = {
         }
         else{
             
-            res.json(error.details[0].message);
+            res.json({message: error.details[0].message, status: "Error"});
         }
         
     },
@@ -96,7 +96,7 @@ const validationService = {
         }
         else{
             
-            res.json(error.details[0].message);
+            res.json({message: error.details[0].message, status: "Error"});
         }
         
     },
@@ -110,7 +110,7 @@ const validationService = {
         }
         else{
             
-            res.json(error.details[0].message);
+            res.json({message: error.details[0].message, status: "Error"});
         }
         
     },
