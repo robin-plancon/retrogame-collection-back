@@ -11,6 +11,11 @@ const userController = {
       
       
       const targetId = req.session.user.id;
+
+      if (!targetId) {
+        res.status(401).json({ message: "Utilisateur non authentifié", status: "Error" });
+        return;
+      }
       
       const user = await userDataMapper.getUserDetail(targetId);
       
@@ -34,7 +39,7 @@ const userController = {
         res.json({result: newUser, status : "Success"});
       }
       else {
-        res.json({message : "La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
+        res.status(400).json({message : "La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       };
       
     }
@@ -48,11 +53,11 @@ const userController = {
           res.status(400).json({ message: "Cet email est déjà utilisé.", status : "Error" });
         } else {
           // Other unexpected error
-          res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
+          res.status(500).json({ message: error.toString(), status : "Error" });
         }
       } else {
         // Other unexpected error
-        res.status(500).json({ message: "Erreur interne du serveur.", status : "Error" });
+        res.status(500).json({ message: error.toString(), status : "Error" });
       }
     }
     
@@ -106,6 +111,11 @@ const userController = {
     try {
       
       const userId = req.session.user.id;
+      if (!userId) {
+        res.status(401).json({ message: "Utilisateur non authentifié", status: "Error" });
+        return;
+      }
+
       let {currentPassword, newPassword, confirmation} = req.body;
       // Retrieving user information by its id from the database then comparing provided new password with the current one in the database
       const user = await userDataMapper.getUserDetail(userId);
@@ -135,6 +145,10 @@ const userController = {
   deleteUser : async function (req, res) {
     try {
       const userId = req.session.user.id;
+      if (!userId) {
+        res.status(401).json({ message: "Utilisateur non authentifié", status: "Error" });
+        return;
+      }
       
       const deletedUser = await userDataMapper.deleteUser(userId);
       return res.json({message : "Votre compte a bien été supprimé !", status : "Success"});

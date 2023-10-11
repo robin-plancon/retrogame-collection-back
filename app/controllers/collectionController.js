@@ -33,7 +33,7 @@ const collectionController = {
             const slug = req.body.slug;
             
             const collection = await collectionDataMapper.postCollection(userId, gameApiId, slug);
-            res.send({message : "Jeu ajouté à la collection !", status : "Success"});
+            res.json({result : collection, status : "Success"});
             
         } catch (error) {
             res.status(500).json({message: error.toString(), status : "Error"});
