@@ -12,7 +12,7 @@ const mailController = {
       const targetUser = await userDataMapper.getUserByEmail(email);
 
       if (!targetUser) {
-        return res.json({
+        return res.status(400).json({
           message: "Cet email est invalide !",
           status: "Error",
         });

@@ -66,12 +66,12 @@ const userController = {
       const targetUser = await userDataMapper.getUserByNickname(nickname);
       
       if (!targetUser) {
-        return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
+        return res.status(401).json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
       // Verifying if the password provided is similare to the one in the database, using bcrypt ".compare" method
       const isGoodPass = await bcrypt.compare(password, targetUser.password);
       if (!isGoodPass){
-        return res.json({message : "Couple login/mot de passe incorrect !", status : "Error"});
+        return res.status(401).json({message : "Couple login/mot de passe incorrect !", status : "Error"});
       }
       // Saving user details in the session without the password
       delete targetUser.password;
@@ -81,16 +81,25 @@ const userController = {
       
       return res.json({token: token, user: targetUser, status : "Success"});
     } catch (error) {
-      return res.status(500).json(error.toString());
+      return res.status(500).json({message: error.toString(), status: "Error"});
     };
     
   },
   
   // Allow user to disconnect from its account by removing its details from the session
-  logout : function (req, res) {
-    delete req.session.user;
-    return res.send ({message : "Vous êtes déconnecté !", status : "Success"});
+  logout: function (req, res) {
+    try {
+      if (req.session.user) {
+        delete req.session.user;
+        return res.send({ message: "Vous êtes déconnecté !", status: "Success" });
+      } else {
+        return res.status(401).json({ message: "Aucune session utilisateur trouvée.", status: "Error" });
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error.toString(), status: "Error" });
+    }
   },
+  
   
   // Allow user to modify its password
   patchUser : async function(req, res) {
@@ -102,7 +111,7 @@ const userController = {
       const user = await userDataMapper.getUserDetail(userId);
       const isGoodPass = await bcrypt.compare(currentPassword, user.password);
       if (!isGoodPass){
-        return res.json({message :"Le mot de passe actuel est incorrect !", status : "Error"});
+        return res.status(401).json({message :"Le mot de passe actuel est incorrect !", status : "Error"});
       }
       // If new password is equal to confirmation, we hash it using bcrypt then we call the dataMapper to update the password in the database
       if (newPassword == confirmation) {
@@ -112,7 +121,7 @@ const userController = {
         
       }
       else {
-        return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
+        return res.status(400).json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       };
       
       
@@ -148,7 +157,7 @@ const userController = {
         
       }
       else {
-        return res.json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
+        return res.status(400).json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       } 
     }catch (error) {
       return res.status(500).json({message: error.toString(), status: "Error"});
