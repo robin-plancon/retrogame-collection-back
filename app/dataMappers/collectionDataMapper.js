@@ -1,8 +1,9 @@
 const axios = require('axios');
 const client = require('./dbClient.js');
+const log = require("../service/errorLogService");
 
 // fields and platform ids list used in the request to the IGDB API, cf l40
-const fields = "fields id, cover.url, name, cover.height, cover.width, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary;";
+const fields = "fields id, cover.url, name, cover.height, cover.width, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary";
 const platform_list = "4, 7, 15, 16, 18, 19, 22, 24, 25, 26, 27, 29, 30, 32, 33, 35, 50, 51, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 70, 71, 75, 78, 79, 80, 84, 86, 87, 88, 89, 90, 93, 94, 99, 114, 115, 117, 119, 120, 123, 128, 136, 142, 154, 158, 274, 373, 410";
 
 
@@ -15,8 +16,10 @@ const collectionDataMapper = {
         const sqlQuery = `SELECT "api_id" FROM "game"
         JOIN "collection" ON game.id = collection.game_id
         WHERE "user_id" = $1;`
-        const result = await client.query(sqlQuery, [id]);        
+        var result = await client.query(sqlQuery, [id]);  
+           
         } catch (error) {
+        log.error({ error: error }, 'Erreur : ', error.message);
         throw new Error("Impossible de récupérer les données de la base de données.");
         }
         
@@ -45,6 +48,7 @@ const collectionDataMapper = {
         
         return games.data;
     } catch (error) {
+        log.error({ error: error }, 'Erreur : ', error.message);
         throw new Error("Impossible de récupérer les données de l'API IGDB.");
     }
     },
@@ -56,8 +60,9 @@ const collectionDataMapper = {
         const gameQuery = `
         SELECT insert_game($1, $2) AS game_id, $2 AS slug;
         `;
-        const result = await client.query(gameQuery, [gameApiId, slug]);
+        var result = await client.query(gameQuery, [gameApiId, slug]);
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative d'ajout du jeu dans la table 'game'.");
         }
         const game_id = result.rows[0].game_id;
@@ -76,6 +81,7 @@ const collectionDataMapper = {
         }
         return newCollection.rows[0];
     } catch (error) {
+        log.error({ error: error }, 'Erreur : ', error.message);
         throw new Error("Erreur lors de la tentative d'ajout du jeu à la table 'collection'.");
     }
     },
@@ -90,6 +96,7 @@ const collectionDataMapper = {
         
         return gameToDelete.rows[0];
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative de suppression au niveau de la base de données.");
             }
     

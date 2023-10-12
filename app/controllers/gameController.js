@@ -1,4 +1,5 @@
 const gameDataMapper = require("../dataMappers/gameDataMapper");
+const log = require("../service/errorLogService");
 
 
 const gameController = {
@@ -20,6 +21,7 @@ const gameController = {
             
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({result: error.toString(), status : "Error"});
         }
         
@@ -32,6 +34,10 @@ const gameController = {
             const targetId = req.params.id;
             
             const game = await gameDataMapper.getOneGame(targetId);
+
+            if(!game) {
+                res.status(404).json({message: "Aucun jeu trouvé avec ces données.", status : "Error"});;
+            }
             
             // Pictures size from the IGDB API are defined inside the pictures url, so we used ".replace" method to resize them as needed
             if (game.cover)
@@ -40,6 +46,7 @@ const gameController = {
             res.json({result: game, status : "Success"});          
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
         
@@ -53,9 +60,14 @@ const gameController = {
             
             const game = await gameDataMapper.getOneGameBySlug(slug);
             
+            if(!game) {
+                res.status(404).json({message: "Aucun jeu trouvé avec ces données.", status : "Error"});;
+            }
+            
             res.json({result: game, status : "Success"});          
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
         
@@ -78,6 +90,7 @@ const gameController = {
             res.json({result: searchedGame, status : "Success"});
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
     },
@@ -96,6 +109,7 @@ const gameController = {
             res.json({result: gamesByPlatform,status : "Success"});
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
     },

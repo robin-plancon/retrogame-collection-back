@@ -1,6 +1,7 @@
 const axios = require('axios');
 const client = require('./dbClient.js');
 require('dotenv').config();
+const log = require("../service/errorLogService");
 
 
 const userDataMapper = {
@@ -12,6 +13,7 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [id]);
         return result.rows[0];  
         } catch (error) {
+        log.error({ error: error }, 'Erreur : ', error.message);
         throw new Error("Impossible d'obtenir les données utilisateur depuis la base de données.");
         }
     },
@@ -23,6 +25,7 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [nickname, email, password]);
         return result.rows[0];
         } catch (error) {
+        log.error({ error: error }, 'Erreur : ', error.message);
         throw new Error("Erreur lors de la tentative de création du compte utilisateur au niveau de la base de données.");
             }
     },
@@ -34,6 +37,7 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [nickname]);
         return result.rows[0];
         }  catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative de récupération des données utilisateurs au niveau de la base de données.");
                 }
     },
@@ -45,6 +49,7 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [newPassword, userId]);
         return null;
         }catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative de modification des données utilisateur au niveau de la base de données.");
             }
     },
@@ -60,6 +65,7 @@ const userDataMapper = {
         const userResult = await client.query(userQuery, [userId]);
         return userResult.rows[0];
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative de suppression du compte utilisateur au niveau de la base de données.");
             }
     },
@@ -71,6 +77,7 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [email]);
         return result.rows[0];
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative de récupération des données utilisateurs au niveau de la base de données.")
         }
     },

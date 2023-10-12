@@ -2,6 +2,7 @@ const userDataMapper = require("../dataMappers/userDataMapper");
 const bcrypt = require('bcrypt');
 const securityService = require('../service/securityService');
 const jwt = require('jsonwebtoken');
+const log = require("../service/errorLogService");
 
 const userController = {
   
@@ -22,6 +23,7 @@ const userController = {
        res.json({result: user, status : "Success"});
       
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
@@ -52,10 +54,12 @@ const userController = {
           res.status(400).json({ message: "Cet email est déjà utilisé.", status : "Error" });
         } else {
           // Other unexpected error
+          log.error({ error: error }, 'Erreur : ', error.message);
           res.status(500).json({ message: error.toString(), status : "Error" });
         }
       } else {
         // Other unexpected error
+        log.error({ error: error }, 'Erreur : ', error.message);
         res.status(500).json({ message: error.toString(), status : "Error" });
       }
     }
@@ -85,6 +89,7 @@ const userController = {
       
       return res.json({token: token, user: targetUser, status : "Success"});
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json({message: error.toString(), status: "Error"});
     };
     
@@ -100,6 +105,7 @@ const userController = {
         return res.status(401).json({ message: "Aucune session utilisateur trouvée.", status: "Error" });
       }
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json({ message: error.toString(), status: "Error" });
     }
   },
@@ -135,6 +141,7 @@ const userController = {
       
       
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json({message: error.toString(), status: "Error"});
       
     }
@@ -152,6 +159,7 @@ const userController = {
       const deletedUser = await userDataMapper.deleteUser(userId);
       return res.json({message : "Votre compte a bien été supprimé !", status : "Success"});
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json({message: error.toString(), status: "Error"});
     }
   },
@@ -173,6 +181,7 @@ const userController = {
         return res.status(400).json({message :"La confirmation et le mot de passe ne sont pas identiques", status : "Error"});
       } 
     }catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json({message: error.toString(), status: "Error"});
     }    
   },
@@ -183,6 +192,7 @@ const userController = {
       securityService.checkResetToken(req, res);
       
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json({message : error.toString(), status: "Error"});
     }
   },

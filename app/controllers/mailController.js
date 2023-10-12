@@ -1,6 +1,7 @@
 const userDataMapper = require("../dataMappers/userDataMapper");
 const transporter = require("../middlewares/mail");
 const securityService = require("../service/securityService");
+const log = require("../service/errorLogService");
 
 const mailController = {
   // Manage the sending of the reset email for forgotten passwords
@@ -79,6 +80,7 @@ const mailController = {
 
       res.send({ message: "Email sent successfully", status: "Success" });
     } catch (error) {
+      log.error({ error: error }, 'Erreur : ', error.message);
       return res.status(500).json(error.toString());
     }
   },

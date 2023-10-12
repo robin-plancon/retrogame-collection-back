@@ -1,4 +1,5 @@
 const collectionDataMapper = require('../dataMappers/collectionDataMapper')
+const log = require("../service/errorLogService");
 
 
 const collectionController = {
@@ -19,6 +20,7 @@ const collectionController = {
             res.json({result: collection, status : "Success"});
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
         
@@ -36,6 +38,7 @@ const collectionController = {
             res.json({result : collection, status : "Success"});
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
     },
@@ -51,15 +54,12 @@ const collectionController = {
             res.json({result: gameToDelete, status : "Success"});
             
         } catch (error) {
+            log.error({ error: error }, 'Erreur : ', error.message);
             res.status(500).json({message: error.toString(), status : "Error"});
         }
         
-    }
-    
-    
+    },
 };
-
-
 
 
 module.exports = collectionController;
