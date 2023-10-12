@@ -28,6 +28,8 @@ app.use(cors(
     saveUninitialized: false,
   }));
   
+  app.use(express.static("public")); 
+
   app.use(router);
   
   app.use(notFound404);

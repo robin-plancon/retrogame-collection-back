@@ -37,7 +37,7 @@ const securityService = {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             
             // Checks if the token is of type 'reset'
-            if (decoded.type !== 'reset' || !decoded) {
+            if (decoded.type !== 'reset') {
                 return res.status(401).json({ message: 'Token invalide ou expiré', status: 'Error' });
             }
             

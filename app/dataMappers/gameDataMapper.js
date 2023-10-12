@@ -1,8 +1,9 @@
 const axios = require('axios');
 require('dotenv').config();
 const gameData = require('../data/gameData.json');
-const e = require('cors');
 
+
+// fields and platform ids list used in the request to the IGDB API, cf l50 ,72, 94, 118, 139
 const fields = "fields id, cover.url, name, cover.height, cover.width, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary;";
 const platform_list = "4, 7, 15, 16, 18, 19, 22, 24, 25, 26, 27, 29, 30, 32, 33, 35, 50, 51, 53, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 70, 71, 75, 78, 79, 80, 84, 86, 87, 88, 89, 90, 93, 94, 99, 114, 115, 117, 119, 120, 123, 128, 136, 142, 154, 158, 274, 373, 410"
 const platform_filter = (platformId) =>{
@@ -35,7 +36,8 @@ const gameDataMapper = {
       }
     }
     const randomIdsList= randomIdsArray.join() 
-    try{
+
+    try {
       const result = await axios(
         
         { method: 'POST',
@@ -49,11 +51,10 @@ const gameDataMapper = {
       })
       
       return result.data;
-    }
-    catch (error) {
-      console.log(error);
-    }
-    
+    } catch (error) {
+      throw new Error("Impossible d'obtenir les données de jeu depuis l'API IGDB.");
+  }
+        
   },
   
   // Retrieve one game by its ID with details from IGDB API
@@ -73,7 +74,7 @@ const gameDataMapper = {
       return result.data[0];
     }
     catch (error) {
-      console.log(error);
+      throw new Error("Impossible d'obtenir les données de jeu depuis l'API IGDB.");
     }
     
   },
@@ -95,7 +96,7 @@ const gameDataMapper = {
       return result.data[0];
     }
     catch (error) {
-      console.log(error);
+      throw new Error("Impossible d'obtenir les données de jeu depuis l'API IGDB.");
     }
     
   },
@@ -119,7 +120,7 @@ const gameDataMapper = {
       return result.data;
     }
     catch (error) {
-      console.log(error);
+      throw new Error("Impossible d'obtenir les données de jeu depuis l'API IGDB.");
     }
   },
   
@@ -137,11 +138,11 @@ const gameDataMapper = {
         },
         data: `${fields} sort name asc; where (release_dates.platform = ${platformId} & (release_dates.status != (1,2,3,5) | release_dates.status = null)) & keywords != (16696, 24124, 2004, 38055, 37841, 5340, 305); limit 500;`
       })
-      console.log(result.data)
+      
       return result.data;
     }
     catch (error) {
-      console.log(error);
+      throw new Error("Impossible d'obtenir les données de jeu depuis l'API IGDB.");
     }
   },
   
