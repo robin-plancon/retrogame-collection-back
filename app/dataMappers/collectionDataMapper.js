@@ -15,7 +15,10 @@ const collectionDataMapper = {
         const sqlQuery = `SELECT "api_id" FROM "game"
         JOIN "collection" ON game.id = collection.game_id
         WHERE "user_id" = $1;`
-        const result = await client.query(sqlQuery, [id]);        
+        const result = await client.query(sqlQuery, [id]);    
+        if (result.rows.length === 0) {
+            return [];
+        }
         } catch (error) {
         throw new Error("Impossible de récupérer les données de la base de données.");
         }
