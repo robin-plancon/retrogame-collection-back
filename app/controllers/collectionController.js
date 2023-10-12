@@ -10,6 +10,11 @@ const collectionController = {
             const targetId = req.params.id;
             const collection = await collectionDataMapper.getCollection(targetId);
             
+            if (collection.length === 0) {
+                res.json({result: collection, status : "Success"});
+                return;
+            }
+
             // Pictures size from the IGDB API are defined inside the pictures url, so we used ".replace" method to resize them as needed
             for (const game of collection) {
                 if (game.cover)
