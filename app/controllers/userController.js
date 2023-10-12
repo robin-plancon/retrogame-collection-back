@@ -19,8 +19,7 @@ const userController = {
       
       const user = await userDataMapper.getUserDetail(targetId);
       
-      //Voir avec le front comment gérer le cas ou l'utilisateur n'existe pas en BDD (erreur 404 ? comment ?)
-      res.json({result: user, status : "Success"});
+       res.json({result: user, status : "Success"});
       
     } catch (error) {
       res.status(500).json({message: error.toString(), status: "Error"});

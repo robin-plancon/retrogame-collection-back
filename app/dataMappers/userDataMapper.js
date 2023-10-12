@@ -66,9 +66,13 @@ const userDataMapper = {
     
     // Retrieve user by email from the database
     getUserByEmail: async function(email) {
+        try {
         const sqlQuery = `SELECT * FROM "user" WHERE email = $1`;
         const result = await client.query(sqlQuery, [email]);
-        return result.rows[0];    
+        return result.rows[0];
+        } catch (error) {
+            throw new Error("Erreur lors de la tentative de récupération des données utilisateurs au niveau de la base de données.")
+        }
     },
 };
 

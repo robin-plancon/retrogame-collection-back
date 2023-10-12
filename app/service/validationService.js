@@ -3,6 +3,9 @@ const Joi = require('joi');
 
 
 // Schema of what is expected in the registration form
+// - email: must be a valid email address.
+// - nickname: must start with a letter and can contain letters, numbers, underscores, and hyphens. Length between 3 and 15 characters.
+// - password: must be 8-14 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.
 const schemaUserSignup = Joi.object({
     email:Joi.string().email().required(),
     nickname:Joi.string().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9_-]{2,14}$')).required(),
@@ -10,17 +13,17 @@ const schemaUserSignup = Joi.object({
     confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
 }).required();
 
-/* The regular expression above checks that a password:
-Consists of a minimum of 8 characters, at least one uppercase letter, at least one lowercase letter,
-At least one digit, and at least one special character." */
-
 // Schema of what is expected in the login form
+// - nickname: must start with a letter and can contain letters, numbers, underscores, and hyphens. Length between 3 and 15 characters.
+// - password: must be 8-14 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.
 const schemaUserLogin = Joi.object({
     nickname:Joi.string().pattern(new RegExp('^[a-zA-Z][a-zA-Z0-9_-]{2,14}$')).required(),
     password:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required()
 }).required();
 
 // Schema of what is expected in the change password form
+// - currentPassword: must be 8-14 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.
+// - newPassword: must be 8-14 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.
 const schemaUserNewPassword = Joi.object({
     currentPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
     newPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
@@ -28,13 +31,16 @@ const schemaUserNewPassword = Joi.object({
 }).required();
 
 // Schema of what is expected in the forgotten password form
+// - newPassword: must be 8-14 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.
+// - token: required for password reset
 const schemaUserForgottenPassword = Joi.object({
     newPassword:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
     confirmation:Joi.string().pattern(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,14}$')).required(),
     token:Joi.string().required()
 }).required();
 
-//
+// Schema for forgotten password email input
+// - email: must be a valid email address.
 const schemaForgottenPasswordMailInput = Joi.object({
     email:Joi.string().email().required(),
 }).required();

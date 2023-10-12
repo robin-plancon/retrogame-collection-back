@@ -1,7 +1,7 @@
 const axios = require('axios');
 require('dotenv').config();
 const gameData = require('../data/gameData.json');
-const e = require('cors');
+
 
 // fields and platform ids list used in the request to the IGDB API, cf l50 ,72, 94, 118, 139
 const fields = "fields id, cover.url, name, cover.height, cover.width, slug, first_release_date, genres.name, platforms.name, platforms.platform_logo.url, screenshots.url, summary;";
@@ -138,7 +138,7 @@ const gameDataMapper = {
         },
         data: `${fields} sort name asc; where (release_dates.platform = ${platformId} & (release_dates.status != (1,2,3,5) | release_dates.status = null)) & keywords != (16696, 24124, 2004, 38055, 37841, 5340, 305); limit 500;`
       })
-      console.log(result.data)
+      
       return result.data;
     }
     catch (error) {
