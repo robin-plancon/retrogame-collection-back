@@ -63,6 +63,9 @@ const gameController = {
             if(!game) {
                 res.status(404).json({message: "Aucun jeu trouvé avec ces données.", status : "Error"});;
             }
+            if (game.cover)
+            {game.cover.url=game.cover.url.replace("thumb", "cover_big_2x") };
+            
             
             res.json({result: game, status : "Success"});          
             
