@@ -17,8 +17,7 @@ const collectionDataMapper = {
         JOIN "collection" ON game.id = collection.game_id
         WHERE "user_id" = $1;`
         var result = await client.query(sqlQuery, [id]);  
-           
-        const result = await client.query(sqlQuery, [id]);    
+             
         if (result.rows.length === 0) {
             return [];
         }
