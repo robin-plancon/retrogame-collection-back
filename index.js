@@ -26,6 +26,11 @@ app.use(cors(
     secret: process.env.PG_SESSION_SECRET,
     resave: true, 
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    }
   }));
 
   app.enable('trust proxy');
