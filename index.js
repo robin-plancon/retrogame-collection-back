@@ -26,6 +26,10 @@ app.use(cors(
     secret: process.env.PG_SESSION_SECRET,
     resave: true, 
     saveUninitialized: false,
+    cookie: {
+      path: '/',
+      secure: true
+    }
   }));
   
   app.use(express.static("public")); 
