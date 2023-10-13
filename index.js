@@ -26,12 +26,6 @@ app.use(cors(
     secret: process.env.PG_SESSION_SECRET,
     resave: true, 
     saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      sameSite: "none",
-      secure: true,
-    }
   }));
 
   app.enable('trust proxy');
