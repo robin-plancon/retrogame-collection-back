@@ -68,6 +68,7 @@ const collectionDataMapper = {
             log.error({ error: error }, 'Erreur : ', error.message);
             throw new Error("Erreur lors de la tentative d'ajout du jeu dans la table 'game'.");
         }
+        console.log('result', result);
         const game_id = result.rows[0].game_id;
         
         try {
@@ -78,6 +79,7 @@ const collectionDataMapper = {
         RETURNING *;
         `;
         const newCollection = await client.query(collectionQuery, [userId, game_id]);
+        console.log('newCollection', newCollection);
         
         if (newCollection.rows.length == 0) {
             return "Attention ce jeu fait déjà parti de votre collection"
