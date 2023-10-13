@@ -27,7 +27,7 @@ app.use(cors(
     resave: true, 
     saveUninitialized: false,
     cookie: {
-      sameSite: none,
+      sameSite: "none",
       secure: true,
     }
   }));
