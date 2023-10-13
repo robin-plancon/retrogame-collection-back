@@ -6,7 +6,6 @@ const session = require('express-session');
 const notFound404 = require("./app/middlewares/notFound404");
 const cors = require('cors');
 
-console.log(process.env.CLIENT_URL);
 const app = express();
 app.use(cors(
   {

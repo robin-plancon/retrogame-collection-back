@@ -11,7 +11,7 @@ const mailController = require("./controllers/mailController");
 // Game routes
 router.get("/games", gameController.getGames);
 router.get("/game/:id(\\d+)", gameController.getOneGame);
-router.get("/game/:slug", gameController.getOneGameBySlug);
+router.get("/game/slug/:slug", gameController.getOneGameBySlug);
 router.get("/search", gameController.getGameByName);
 router.get("/platform/:id(\\d+)/games", gameController.getGamesByPlatform);
 
