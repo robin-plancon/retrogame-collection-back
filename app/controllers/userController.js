@@ -47,7 +47,6 @@ const userController = {
     catch (error) {
       // 23505 = Violation of unique constraint code.
       if (error.code === '23505') {
-        
         if (error.detail.includes('nickname')) {
           res.status(400).json({ message: "Ce pseudo est déjà utilisé.", status : "Error" });
         } else if (error.detail.includes('email')) {

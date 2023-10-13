@@ -25,9 +25,11 @@ const userDataMapper = {
         const result = await client.query(sqlQuery, [nickname, email, password]);
         return result.rows[0];
         } catch (error) {
+        console.log("Erreur PostgreSQL : ", error.detail);
+        console.log("Code d'erreur PostgreSQL : ", error.code);
         log.error({ error: error }, 'Erreur : ', error.message);
-        throw new Error("Erreur lors de la tentative de création du compte utilisateur au niveau de la base de données.");
-            }
+        throw error;
+        }
     },
     
     // Retrieve user by nickname from the database
