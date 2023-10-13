@@ -33,6 +33,8 @@ app.use(cors(
       secure: true,
     }
   }));
+
+  app.enable('trust proxy');
   
   app.use(express.static("public")); 
 
