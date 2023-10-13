@@ -9,6 +9,7 @@ const collectionController = {
         try {
             const targetId = req.params.id;
             const collection = await collectionDataMapper.getCollection(targetId);
+            console.log('collection', collection);
             
             if (collection.length === 0) {
                 res.json({result: collection, status : "Success"});
@@ -38,8 +39,13 @@ const collectionController = {
             const userId = req.session.user.id;
             const gameApiId = req.params.gameApiId;
             const slug = req.body.slug;
+
+            console.log('userId', userId);
+            console.log('gameApiId', gameApiId);
+            console.log('slug', slug);
             
             const collection = await collectionDataMapper.postCollection(userId, gameApiId, slug);
+            console.log('collection', collection);
             res.json({result : collection, status : "Success"});
             
         } catch (error) {
